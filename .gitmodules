@@ -1,6 +1,6 @@
-[submodule "thirtparty/eLog"]
-	path = thirtparty/eLog
+[submodule "thirdparty/eLog"]
+	path = thirdparty/eLog
 	url = https://github.com/RealFaceCode/eLog.git
-[submodule "thirtparty/glfw"]
-	path = thirtparty/glfw
+[submodule "thirdparty/glfw"]
+	path = thirdparty/glfw
 	url = https://github.com/glfw/glfw.git

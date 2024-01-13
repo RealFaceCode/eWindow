@@ -11,8 +11,8 @@ if($ENV{EWINDOWLIB_BUILD_EXAMPLES})
     set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bin)
 endif()
 
-add_subdirectory(thirtparty/eLog)
-add_subdirectory(thirtparty/glfw)
+add_subdirectory(thirdparty/eLog)
+add_subdirectory(thirdparty/glfw)
 
 file(GLOB_RECURSE SOURCE_FILES CONFIGURE_DEPENDS  "libBuild/src/*.cpp")
 
@@ -20,7 +20,7 @@ if(NOT TARGET eWindowLib)
     add_library(eWindowLib SHARED ${SOURCE_FILES})
     target_compile_features(eWindowLib PRIVATE cxx_std_20)
     target_include_directories(eWindowLib PUBLIC libBuild/hdr )
-    target_include_directories(eWindowLib PRIVATE thirtparty/eLog/libBuild/hdr thirtparty/glfw/include thirtparty/stbi)
+    target_include_directories(eWindowLib PRIVATE thirdparty/eLog/libBuild/hdr thirdparty/glfw/include thirdparty/stbi)
     target_link_libraries(eWindowLib PRIVATE eLogLib glfw)
 endif()
 
