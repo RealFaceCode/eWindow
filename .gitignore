@@ -8,5 +8,3 @@ build-MAC/
 build-ANDROID/
 build-IOS/
 build-UNIX/
-main.cpp
-/CMakeLists.txt
