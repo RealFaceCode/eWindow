@@ -2,8 +2,7 @@
 #include <GLFW/glfw3.h>
 #include <elog.hpp>
 
-#define STB_IMAGE_IMPLEMENTATION
-#include <stb_image.h>
+#include "imageload.hpp"
 
 namespace ewin
 {
@@ -179,6 +178,9 @@ namespace ewin
 
     Window::~Window()
     {
+		for(auto& [name, cursor] : cursorMap)
+			glfwDestroyCursor(cursor);
+		cursorMap.clear();
         glfwDestroyWindow(window);
     }
 
@@ -251,14 +253,52 @@ namespace ewin
 	void Window::setIcon(std::filesystem::path path)
 	{
 		GLFWimage image;
-		image.pixels = stbi_load(path.string().c_str(), &image.width, &image.height, 0, 4);
-		if(image.pixels == nullptr)
+		auto img = internal::LoadImage(path);
+		if(!img.has_value())
 		{
-			elog::Error("Failed to load image: {}", path.string());
+			elog::Error("Failed to set Icon: {}", path.string());
 			return;
 		}
+		image = img.value();
+
 		glfwSetWindowIcon(window, 1, &image);
-		stbi_image_free(image.pixels);
+		internal::FreeImage(image);
+	}
+
+	void Window::addCursor(std::string_view name, std::filesystem::path path, int xhot, int yhot)
+	{
+		GLFWimage image;
+		auto img = internal::LoadImage(path);
+		if(!img.has_value())
+			return;
+		image = img.value();
+
+		GLFWcursor* cursor = glfwCreateCursor(&image, xhot, yhot);
+		if(cursor == nullptr)
+		{
+			internal::FreeImage(image);
+			elog::Error("Failed to create cursor: {}", path.string());
+			return;
+		}
+		internal::FreeImage(image);
+
+		auto [it, succes] = cursorMap.insert(std::pair<std::string_view, GLFWcursor*>(name, cursor));
+		if(!succes)
+		{
+			elog::Error("Failed to add cursor: {}", path.string());
+		}
+	}
+
+	void Window::setCursor(const std::string& name)
+	{
+		auto it = cursorMap.find(name);
+		if(it == cursorMap.end())
+		{
+			elog::Error("Failed to set cursor: {}", name);
+			return;
+		}
+		auto cursor = it->second;
+		glfwSetCursor(window, cursor);
 	}
 
     void Window::update()

@@ -2,6 +2,7 @@
 
 #include <filesystem>
 #include <vector>
+#include <unordered_map>
 
 #include "wsettings.hpp"
 #include "winput.hpp"
@@ -9,6 +10,7 @@
 struct GLFWwindow;
 struct GLFWmonitor;
 struct GLFWimage;
+struct GLFWcursor;
 
 namespace ewin
 {
@@ -31,6 +33,8 @@ namespace ewin
         void setTitle(const char* title);
         void setOpacity(float opacity);
         void setIcon(std::filesystem::path path);
+        void addCursor(std::string_view name, std::filesystem::path path, int xhot, int yhot);
+        void setCursor(const std::string& name);
 
         void update();
         void close();
@@ -85,6 +89,7 @@ namespace ewin
         GLFWwindow* window;
         GLFWmonitor* monitor;
         GLFWwindow* share;
+        std::unordered_map<std::string, GLFWcursor*> cursorMap;
         structs::WindowSettings settings;
         structs::WInput input;
     };
