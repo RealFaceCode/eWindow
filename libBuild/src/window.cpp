@@ -475,9 +475,9 @@ namespace ewin
 		return input.scroll.yoffset < 0;
 	}
 
-	std::vector<std::filesystem::path> Window::getDrops() const
+	structs::Drops Window::getDrops() const
 	{
-		return input.drops.paths;
+		return input.drops;
 	}
 
 	const structs::Key& Window::getKey(enums::Key key) const

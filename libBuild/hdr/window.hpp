@@ -70,7 +70,7 @@ namespace ewin
         bool isScrollUp() const;
         bool isScrollDown() const;
 
-        std::vector<std::filesystem::path> getDrops() const;
+        structs::Drops getDrops() const;
 
         const structs::Key& getKey(enums::Key key) const;
         const structs::Key& getKeyReset(enums::Key key) const;
