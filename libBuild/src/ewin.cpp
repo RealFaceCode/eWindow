@@ -5,13 +5,14 @@
 
 #if _WIN32
     #include <Windows.h>
-    #include <ShObjIdl.h>
 #endif
 
 namespace ewin
 {
     bool Init()
     {
+        elog::Init();
+
         if (!glfwInit())
         {
             elog::Error("Failed to initialize eWin");
