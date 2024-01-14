@@ -94,7 +94,7 @@ namespace ewin
 			Window* win = static_cast<Window*>(glfwGetWindowUserPointer(window));
 			if(win->isInputBlocked())
 				return;
-				
+
 			auto& input = win->getInput();
 			input.scroll.xoffset = xoffset;
 			input.scroll.yoffset = yoffset;
@@ -163,29 +163,39 @@ namespace ewin
     }
 
     Window::Window()
+	: window(nullptr), monitor(nullptr), share(nullptr), cursorMap({}), input({}), blockInputFlag(false)
     {
-        settings.width = 0;
-        settings.height = 0;
-        settings.title = "";
-        window = nullptr;
+        settings = 
+		{
+			.width = 0,
+			.height = 0,
+			.title = "",
+			.opacity = 1.0f
+		};
     }
 
     Window::Window(int width, int height, const char* title)
-    {
-        settings.width = width;
-        settings.height = height;
-        settings.title = title;
-        monitor = nullptr;
-        share = nullptr;
+	: window(nullptr), monitor(nullptr), share(nullptr), cursorMap({}), input({}), blockInputFlag(false)
+	{
+		settings =
+		{
+			.width = width,
+			.height = height,
+			.title = title,
+			.opacity = 1.0f
+		};
     }
 
     Window::Window(int width, int height, const char* title, GLFWmonitor* monitor, GLFWwindow* share)
+	: window(nullptr), monitor(monitor), share(share), cursorMap({}), input({}), blockInputFlag(false)
     {
-        settings.width = width;
-        settings.height = height;
-        settings.title = title;
-        this->monitor = monitor;
-        this->share = share;
+		settings =
+		{
+			.width = width,
+			.height = height,
+			.title = title,
+			.opacity = 1.0f
+		};
     }
 
     Window::~Window()
@@ -193,7 +203,15 @@ namespace ewin
 		for(auto& [name, cursor] : cursorMap)
 			glfwDestroyCursor(cursor);
 		cursorMap.clear();
-        glfwDestroyWindow(window);
+		if(window != nullptr)
+		{
+			glfwDestroyWindow(window);
+			window = nullptr;
+		}
+		if(monitor != nullptr)
+			monitor = nullptr;
+		if(share != nullptr)
+			share = nullptr;
     }
 
     bool Window::build()
