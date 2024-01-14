@@ -175,6 +175,7 @@ namespace ewin
     {
         struct Button
         {
+        public:
             enums::InputState state;
             int button;
             int action;
@@ -183,6 +184,7 @@ namespace ewin
 
         struct Key
         {
+        public:
             enums::InputState state;
             int key;
             int scancode;
@@ -192,18 +194,22 @@ namespace ewin
 
         struct Cursor
         {
+        public:
             double xpos;
             double ypos;
         };
 
         struct Scroll
         {
+        public:
             double xoffset;
             double yoffset;
         };
 
         struct Drops
         {
+        public:
+            std::vector<std::string> getContexts() const;
             std::vector<std::filesystem::path> paths;
         };
 
