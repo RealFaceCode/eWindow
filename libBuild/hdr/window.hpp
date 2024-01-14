@@ -38,53 +38,53 @@ namespace ewin
 
         void update();
         void close();
-        bool active();
+        bool active() const;
 
         GLFWwindow* getGLFWwindow();
         structs::WindowSettings& getSettings();
         structs::WInput& getInput();
 
-        bool isCursorEntered();
-        bool isWindowFocused();
-        bool isWindowIconified();
-        bool isWindowMaximized();
+        bool isCursorEntered() const;
+        bool isWindowFocused() const;
+        bool isWindowIconified() const;
+        bool isWindowMaximized() const;
 
-        bool isKeyPressed(enums::Key key);
-        bool isKeyReleased(enums::Key key);
-        bool isKeyRepeated(enums::Key key);
-        bool wasKeyPressed(enums::Key key);
-        bool wasKeyReleased(enums::Key key);
+        bool isKeyPressed(enums::Key key) const;
+        bool isKeyReleased(enums::Key key) const;
+        bool isKeyRepeated(enums::Key key) const;
+        bool wasKeyPressed(enums::Key key) const;
+        bool wasKeyReleased(enums::Key key) const;
 
-        bool isButtonPressed(enums::Button button);
-        bool isButtonReleased(enums::Button button);
-        bool isButtonRepeated(enums::Button button);
-        bool wasButtonPressed(enums::Button button);
-        bool wasButtonReleased(enums::Button button);
+        bool isButtonPressed(enums::Button button) const;
+        bool isButtonReleased(enums::Button button) const;
+        bool isButtonRepeated(enums::Button button) const;
+        bool wasButtonPressed(enums::Button button) const;
+        bool wasButtonReleased(enums::Button button) const;
 
-        bool hasCursorEntered();
-        bool hasCursorLeft();
+        bool hasCursorEntered() const;
+        bool hasCursorLeft() const;
 
-        double getCursorX();
-        double getCursorY();
+        double getCursorX() const;
+        double getCursorY() const;
 
-        bool isScrollUp();
-        bool isScrollDown();
+        bool isScrollUp() const;
+        bool isScrollDown() const;
 
-        std::vector<std::filesystem::path> getDrops();
+        std::vector<std::filesystem::path> getDrops() const;
 
-        structs::Key getKey(enums::Key key);
-        structs::Key getKeyReset(enums::Key key);
-        structs::Button getButton(enums::Button button);
-        structs::Button getButtonReset(enums::Button button);
+        const structs::Key& getKey(enums::Key key) const;
+        const structs::Key& getKeyReset(enums::Key key) const;
+        const structs::Button& getButton(enums::Button button) const;
+        const structs::Button& getButtonReset(enums::Button button) const;
 
-        void iconify();
-        void restore();
-        void maximize();
-        void show();
-        void hide();
-        void noteify();
-        void focus();
-    
+        void iconify()const;
+        void restore()const;
+        void maximize() const;
+        void show() const;
+        void hide() const;
+        void noteify() const;
+        void focus() const;
+
     private:
         GLFWwindow* window;
         GLFWmonitor* monitor;
@@ -92,5 +92,6 @@ namespace ewin
         std::unordered_map<std::string, GLFWcursor*> cursorMap;
         structs::WindowSettings settings;
         structs::WInput input;
+        bool blockInput;
     };
 }

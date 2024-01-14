@@ -321,7 +321,7 @@ namespace ewin
 		window = nullptr;
     }
 
-	bool Window::active()
+	bool Window::active() const
 	{
 		if(window == nullptr)
 			return false;
@@ -343,164 +343,164 @@ namespace ewin
         return input;
     }
 
-	bool Window::isCursorEntered()
+	bool Window::isCursorEntered() const
 	{
 		return input.isCursorEntered;
 	}
 
-	bool Window::isWindowFocused()
+	bool Window::isWindowFocused() const
 	{
 		return input.isWindowFocused;
 	}
 
-	bool Window::isWindowIconified()
+	bool Window::isWindowIconified() const
 	{
 		return input.isWindowIconified;
 	}
 
-	bool Window::isWindowMaximized()
+	bool Window::isWindowMaximized() const
 	{
 		return input.isWindowMaximized;
 	}
 
-	bool Window::isKeyPressed(enums::Key key)
+	bool Window::isKeyPressed(enums::Key key) const
 	{
 		return input.key[static_cast<int>(key)].state == enums::InputState::PRESSED;
 	}
 
-	bool Window::isKeyReleased(enums::Key key)
+	bool Window::isKeyReleased(enums::Key key) const
 	{
 		return  input.key[static_cast<int>(key)].state == enums::InputState::RELEASED 
 		|| input.key[static_cast<int>(key)].state == enums::InputState::NONE;
 	}
 
-	bool Window::isKeyRepeated(enums::Key key)
+	bool Window::isKeyRepeated(enums::Key key) const
 	{
 		return input.key[static_cast<int>(key)].state == enums::InputState::REPEATED;
 	}
 
-	bool Window::wasKeyPressed(enums::Key key)
+	bool Window::wasKeyPressed(enums::Key key) const
 	{
 		return input.keyReset[static_cast<int>(key)].state == enums::InputState::PRESSED;
 	}
 
-	bool Window::wasKeyReleased(enums::Key key)
+	bool Window::wasKeyReleased(enums::Key key) const
 	{
 		return input.keyReset[static_cast<int>(key)].state == enums::InputState::RELEASED;
 	}
 
-	bool Window::isButtonPressed(enums::Button button)
+	bool Window::isButtonPressed(enums::Button button) const
 	{
 		return input.button[static_cast<int>(button)].state == enums::InputState::PRESSED;
 	}
 
-	bool Window::isButtonReleased(enums::Button button)
+	bool Window::isButtonReleased(enums::Button button) const
 	{
 		return input.button[static_cast<int>(button)].state == enums::InputState::RELEASED
 		|| input.button[static_cast<int>(button)].state == enums::InputState::NONE;
 	}
 
-	bool Window::isButtonRepeated(enums::Button button)
+	bool Window::isButtonRepeated(enums::Button button) const
 	{
 		return input.button[static_cast<int>(button)].state == enums::InputState::REPEATED;
 	}
 
-	bool Window::wasButtonPressed(enums::Button button)
+	bool Window::wasButtonPressed(enums::Button button) const
 	{
 		return input.buttonReset[static_cast<int>(button)].state == enums::InputState::PRESSED;
 	}
 
-	bool Window::wasButtonReleased(enums::Button button)
+	bool Window::wasButtonReleased(enums::Button button) const
 	{
 		return input.buttonReset[static_cast<int>(button)].state == enums::InputState::RELEASED;
 	}
 
-	bool Window::hasCursorEntered()
+	bool Window::hasCursorEntered() const
 	{
 		return input.cursorEnter == enums::CurserEnter::ENTERED;
 	}
 
-	bool Window::hasCursorLeft()
+	bool Window::hasCursorLeft() const
 	{
 		return input.cursorEnter == enums::CurserEnter::LEFT;
 	}
 
-	double Window::getCursorX()
+	double Window::getCursorX() const
 	{
 		return input.cursor.xpos;
 	}
 
-	double Window::getCursorY()
+	double Window::getCursorY() const
 	{
 		return input.cursor.ypos;
 	}
 
-	bool Window::isScrollUp()
+	bool Window::isScrollUp() const
 	{
 		return input.scroll.yoffset > 0;
 	}
 
-	bool Window::isScrollDown()
+	bool Window::isScrollDown() const
 	{
 		return input.scroll.yoffset < 0;
 	}
 
-	std::vector<std::filesystem::path> Window::getDrops()
+	std::vector<std::filesystem::path> Window::getDrops() const
 	{
 		return input.drops.paths;
 	}
 
-	structs::Key Window::getKey(enums::Key key)
+	const structs::Key& Window::getKey(enums::Key key) const
 	{
 		return input.key[static_cast<int>(key)];
 	}
 
-	structs::Key Window::getKeyReset(enums::Key key)
+	const structs::Key& Window::getKeyReset(enums::Key key) const
 	{
 		return input.keyReset[static_cast<int>(key)];
 	}
 
-	structs::Button Window::getButton(enums::Button button)
+	const structs::Button& Window::getButton(enums::Button button) const
 	{
 		return input.button[static_cast<int>(button)];
 	}
 
-	structs::Button Window::getButtonReset(enums::Button button)
+	const structs::Button& Window::getButtonReset(enums::Button button) const
 	{
 		return input.buttonReset[static_cast<int>(button)];
 	}
 
-	void Window::iconify()
+	void Window::iconify() const
 	{
 		glfwIconifyWindow(window);
 	}
 
-	void Window::restore()
+	void Window::restore() const
 	{
 		glfwRestoreWindow(window);
 	}
 
-	void Window::maximize()
+	void Window::maximize() const
 	{
 		glfwMaximizeWindow(window);
 	}
 
-	void Window::show()
+	void Window::show() const
 	{
 		glfwShowWindow(window);
 	}
 
-	void Window::hide()
+	void Window::hide() const
 	{
 		glfwHideWindow(window);
 	}
 
-	void Window::noteify()
+	void Window::noteify() const
 	{
 		glfwRequestWindowAttention(window);
 	}
 
-	void Window::focus()
+	void Window::focus() const
 	{
 		glfwFocusWindow(window);
 	}
