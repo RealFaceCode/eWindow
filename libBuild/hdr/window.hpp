@@ -1,5 +1,8 @@
 #pragma once
 
+#include <filesystem>
+#include <vector>
+
 #include "wsettings.hpp"
 #include "winput.hpp"
 
