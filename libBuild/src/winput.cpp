@@ -11,15 +11,19 @@ namespace ewin
 
 			for(auto& path : paths)
 			{
-				std::ifstream file(path);
-				if (file.is_open())
-				{
-					std::ifstream file("example.txt");
-					std::stringstream buffer;
-					buffer << file.rdbuf();
-					contexts.emplace_back(buffer.str());
-					file.close();
-				}
+				FILE* file = fopen(path.string().c_str(), "rb");
+				fseek(file, 0, SEEK_END);
+				long size = ftell(file);
+				fseek(file, 0, SEEK_SET);
+
+				char* buffer = new char[size + 1];
+				fread(buffer, 1, size, file);
+				fclose(file);
+
+				buffer[size] = '\0';
+
+				contexts.emplace_back(buffer);
+				delete[] buffer;
 			}
 			return contexts;
 		}
