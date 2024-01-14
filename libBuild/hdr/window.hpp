@@ -85,6 +85,14 @@ namespace ewin
         void noteify() const;
         void focus() const;
 
+        void blockInput(bool block);
+        void setKey(enums::Key key, enums::InputState state, int scancode, int action, int mods);
+        void setButton(enums::Button button, enums::InputState state, int action, int mods);
+        void setCursor(double xpos, double ypos);
+        void setScroll(double xoffset, double yoffset);
+
+        bool isInputBlocked() const;
+
     private:
         GLFWwindow* window;
         GLFWmonitor* monitor;
@@ -92,6 +100,6 @@ namespace ewin
         std::unordered_map<std::string, GLFWcursor*> cursorMap;
         structs::WindowSettings settings;
         structs::WInput input;
-        bool blockInput;
+        bool blockInputFlag;
     };
 }

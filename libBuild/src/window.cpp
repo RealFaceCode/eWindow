@@ -11,6 +11,9 @@ namespace ewin
         void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 		{
 			Window* win = static_cast<Window*>(glfwGetWindowUserPointer(window));
+			if(win->isInputBlocked())
+				return;
+
 			auto& input = win->getInput();
 			input.key[key].key = key;
 			input.key[key].scancode = scancode;
@@ -42,6 +45,9 @@ namespace ewin
 		void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 		{
 			Window* win = static_cast<Window*>(glfwGetWindowUserPointer(window));
+			if(win->isInputBlocked())
+				return;
+
 			auto& input = win->getInput();
 			input.button[button].button = button;
 			input.button[button].action = action;
@@ -67,6 +73,9 @@ namespace ewin
 		void cursor_position_callback(GLFWwindow* window, double xpos, double ypos)
 		{
 			Window* win = static_cast<Window*>(glfwGetWindowUserPointer(window));
+			if(win->isInputBlocked())
+				return;
+
 			auto& input = win->getInput();
 			input.cursor.xpos = xpos;
 			input.cursor.ypos = ypos;
@@ -83,6 +92,9 @@ namespace ewin
 		void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 		{
 			Window* win = static_cast<Window*>(glfwGetWindowUserPointer(window));
+			if(win->isInputBlocked())
+				return;
+				
 			auto& input = win->getInput();
 			input.scroll.xoffset = xoffset;
 			input.scroll.yoffset = yoffset;
@@ -503,5 +515,47 @@ namespace ewin
 	void Window::focus() const
 	{
 		glfwFocusWindow(window);
+	}
+
+	void Window::blockInput(bool block)
+	{
+		blockInputFlag = block;
+	}
+
+	void Window::setKey(enums::Key key, enums::InputState state, int scancode, int action, int mods)
+	{
+		int k = static_cast<int>(key);
+		input.key[k].key = k;
+		input.key[k].scancode = scancode;
+		input.key[k].action = action;
+		input.key[k].mods = mods;
+		input.key[k].state = state;
+	}
+
+	void Window::setButton(enums::Button button, enums::InputState state, int action, int mods)
+	{
+		int b = static_cast<int>(button);
+		input.button[b].button = b;
+		input.button[b].action = action;
+		input.button[b].mods = mods;
+		input.button[b].state = state;
+	}
+
+	void Window::setCursor(double xpos, double ypos)
+	{
+		input.cursor.xpos = xpos;
+		input.cursor.ypos = ypos;
+		glfwSetCursorPos(window, xpos, ypos);
+	}
+
+	void Window::setScroll(double xoffset, double yoffset)
+	{
+		input.scroll.xoffset = xoffset;
+		input.scroll.yoffset = yoffset;
+	}
+
+	bool Window::isInputBlocked() const
+	{
+		return blockInputFlag;
 	}
 }
