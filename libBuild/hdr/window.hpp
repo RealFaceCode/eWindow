@@ -52,13 +52,13 @@ namespace ewin
         bool isKeyPressed(enums::Key key);
         bool isKeyReleased(enums::Key key);
         bool isKeyRepeated(enums::Key key);
-        bool wasKeyPresed(enums::Key key);
+        bool wasKeyPressed(enums::Key key);
         bool wasKeyReleased(enums::Key key);
 
         bool isButtonPressed(enums::Button button);
         bool isButtonReleased(enums::Button button);
         bool isButtonRepeated(enums::Button button);
-        bool wasButtonPresed(enums::Button button);
+        bool wasButtonPressed(enums::Button button);
         bool wasButtonReleased(enums::Button button);
 
         bool hasCursorEntered();

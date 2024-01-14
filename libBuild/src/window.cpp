@@ -379,7 +379,7 @@ namespace ewin
 		return input.key[static_cast<int>(key)].state == enums::InputState::REPEATED;
 	}
 
-	bool Window::wasKeyPresed(enums::Key key)
+	bool Window::wasKeyPressed(enums::Key key)
 	{
 		return input.keyReset[static_cast<int>(key)].state == enums::InputState::PRESSED;
 	}
@@ -405,7 +405,7 @@ namespace ewin
 		return input.button[static_cast<int>(button)].state == enums::InputState::REPEATED;
 	}
 
-	bool Window::wasButtonPresed(enums::Button button)
+	bool Window::wasButtonPressed(enums::Button button)
 	{
 		return input.buttonReset[static_cast<int>(button)].state == enums::InputState::PRESSED;
 	}
