@@ -475,9 +475,16 @@ namespace ewin
 		return input.scroll.yoffset < 0;
 	}
 
-	structs::Drops Window::getDrops() const
+	bool Window::hasDrops() const
 	{
-		return input.drops;
+		return !input.drops.paths.empty();
+	}
+
+	structs::Drops Window::getDrops()
+	{
+		auto drops = input.drops;
+		input.drops.paths.clear();
+		return drops;
 	}
 
 	const structs::Key& Window::getKey(enums::Key key) const

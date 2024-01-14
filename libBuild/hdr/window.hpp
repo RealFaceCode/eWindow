@@ -70,7 +70,8 @@ namespace ewin
         bool isScrollUp() const;
         bool isScrollDown() const;
 
-        structs::Drops getDrops() const;
+        bool hasDrops() const;
+        structs::Drops getDrops();
 
         const structs::Key& getKey(enums::Key key) const;
         const structs::Key& getKeyReset(enums::Key key) const;
