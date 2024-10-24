@@ -10,6 +10,7 @@ namespace ewin
 
 		for(auto& path : paths)
 		{
+			//TODO: rewrite to use eutil
 			FILE* file = ::fopen(path.string().c_str(), "rb");
 			::fseek(file, 0, SEEK_END);
 			long size = ftell(file);

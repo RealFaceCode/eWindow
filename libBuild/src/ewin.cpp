@@ -1,6 +1,6 @@
 #include "ewin.hpp"
 
-#include <elog.hpp>
+
 #include <GLFW/glfw3.h>
 
 #if _WIN32
@@ -11,11 +11,11 @@ namespace ewin
 {
     bool Init()
     {
-        elog::Init();
+        //elog::Init();
 
         if (!::glfwInit())
         {
-            elog::Error("Failed to initialize eWin");
+            //elog::Error("Failed to initialize eWin");
             return false;
         }
 

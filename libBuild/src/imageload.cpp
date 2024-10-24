@@ -4,7 +4,7 @@
 
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
-#include <elog.hpp>
+
 
 namespace ewin
 {
@@ -14,7 +14,7 @@ namespace ewin
 		image.pixels = ::stbi_load(path.string().c_str(), &image.width, &image.height, 0, 4);
 		if(image.pixels == nullptr)
 		{
-			elog::Error("Failed to load image: {}", path.string());
+			//elog::Error("Failed to load image: {}", path.string());
 			return std::nullopt;
 		}
         return image;
