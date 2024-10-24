@@ -9,7 +9,7 @@
 
 namespace ewin
 {
-    bool Init()
+    EWIN_API bool Init()
     {
         //elog::Init();
 
@@ -22,12 +22,12 @@ namespace ewin
         return true;
     }
 
-    void Terminate()
+    EWIN_API void Terminate()
     {
         glfwTerminate();
     }
 
-    void HideTerminal()
+    EWIN_API void HideTerminal()
     {
         #if _WIN32
             HWND console = GetConsoleWindow();
@@ -35,7 +35,7 @@ namespace ewin
         #endif
     }
 
-    void ShowTerminal()
+    EWIN_API void ShowTerminal()
     {
         #if _WIN32
             HWND console = GetConsoleWindow();
@@ -43,7 +43,7 @@ namespace ewin
         #endif
     }
 
-    void CloseTerminal()
+    EWIN_API void CloseTerminal()
     {
         #if _WIN32
             ::FreeConsole();

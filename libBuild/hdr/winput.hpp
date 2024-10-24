@@ -3,6 +3,8 @@
 #include <vector>
 #include <array>
 
+#include "defines.hpp"
+
 namespace ewin
 {
     enum class InputState
@@ -202,7 +204,7 @@ namespace ewin
         double yoffset;
     };
 
-    struct Drops
+    struct EWIN_API Drops
     {
     public:
         std::vector<std::string> getContexts() const;
@@ -226,10 +228,10 @@ namespace ewin
     };
 
 
-    void ResetButtons(WInput& input);
-    void ResetKeys(WInput& input);
-    void ResetScroll(Scroll& scroll);
-    void ResetCursorEnter(WInput& input);
-    void Reset(WInput& input);
+    EWIN_API void ResetButtons(WInput& input);
+    EWIN_API void ResetKeys(WInput& input);
+    EWIN_API void ResetScroll(Scroll& scroll);
+    EWIN_API void ResetCursorEnter(WInput& input);
+    EWIN_API void Reset(WInput& input);
 
 }

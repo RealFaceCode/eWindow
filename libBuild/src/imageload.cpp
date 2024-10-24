@@ -8,7 +8,7 @@
 
 namespace ewin
 {
-    std::optional<GLFWimage> LoadImage(const std::filesystem::path& path)
+    EWIN_API std::optional<GLFWimage> LoadImage(const std::filesystem::path& path)
     {
         GLFWimage image;
 		image.pixels = ::stbi_load(path.string().c_str(), &image.width, &image.height, 0, 4);
@@ -20,7 +20,7 @@ namespace ewin
         return image;
     }
 
-    void FreeImage(GLFWimage& image)
+    EWIN_API void FreeImage(GLFWimage& image)
     {
         ::stbi_image_free(image.pixels);
     }

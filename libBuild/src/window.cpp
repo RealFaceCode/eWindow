@@ -311,7 +311,7 @@ namespace ewin
 		FreeImage(image);
 
 		auto [it, succes] = cursorMap.insert(std::pair<std::string_view, GLFWcursor*>(name, cursor));
-		if(!succes)
+		if(!succes){}
 			//elog::Error("Failed to add cursor: {}", path.string());
 	}
 

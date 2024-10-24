@@ -1,12 +1,13 @@
 #pragma once
 
 #include "window.hpp"
+#include "defines.hpp"
 
 namespace ewin
 {
-    bool Init();
-    void Terminate();
-    void HideTerminal();
-    void ShowTerminal();
-    void CloseTerminal();
+    EWIN_API bool Init();
+    EWIN_API void Terminate();
+    EWIN_API void HideTerminal();
+    EWIN_API void ShowTerminal();
+    EWIN_API void CloseTerminal();
 }

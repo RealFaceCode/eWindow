@@ -28,7 +28,7 @@ namespace ewin
 		return contexts;
 	}
 
-	void ResetButtons(WInput& input)
+	EWIN_API void ResetButtons(WInput& input)
 	{
 		for (int i = 0; i < expr::MaxMButton; i++)
 		{
@@ -39,7 +39,7 @@ namespace ewin
 		}
 	}
 
-	void ResetKeys(WInput& input)
+	EWIN_API void ResetKeys(WInput& input)
 	{
 		for (int i = 0; i < expr::MaxKeyboard; i++)
 		{
@@ -51,18 +51,18 @@ namespace ewin
 		}
 	}
 
-	void ResetScroll(Scroll& scroll)
+	EWIN_API void ResetScroll(Scroll& scroll)
 	{
 		scroll.xoffset = 0.0;
 		scroll.yoffset = 0.0;
 	}
 
-	void ResetCursorEnter(WInput& input)
+	EWIN_API void ResetCursorEnter(WInput& input)
 	{
 		input.cursorEnter = CurserEnter::NONE;
 	}
 
-	void Reset(WInput& input)
+	EWIN_API void Reset(WInput& input)
 	{
 		for (int i = 0; i < expr::MaxMButton; i++)
 		{
@@ -106,5 +106,4 @@ namespace ewin
 		input.isWindowIconified = false;
 		input.isWindowMaximized = false;
 	}
-
 }

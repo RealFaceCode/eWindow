@@ -6,6 +6,7 @@
 
 #include "wsettings.hpp"
 #include "winput.hpp"
+#include "defines.hpp"
 
 struct GLFWwindow;
 struct GLFWmonitor;
@@ -14,7 +15,7 @@ struct GLFWcursor;
 
 namespace ewin
 {
-    struct Window
+    struct EWIN_API Window
     {
     public:
         Window();
