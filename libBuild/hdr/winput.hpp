@@ -1,6 +1,7 @@
 #pragma once
 #include <filesystem>
 #include <vector>
+#include <array>
 
 namespace ewin
 {
@@ -210,10 +211,10 @@ namespace ewin
 
     struct WInput
     {
-        Button button[expr::MaxMButton];
-        Button buttonReset[expr::MaxMButton];
-        Key key[expr::MaxKeyboard];
-        Key keyReset[expr::MaxKeyboard];
+        std::array<Button, expr::MaxMButton> button;
+        std::array<Button, expr::MaxMButton> buttonReset;
+        std::array<Key, expr::MaxKeyboard> key;
+        std::array<Key, expr::MaxKeyboard> keyReset;
         Cursor cursor;
         Scroll scroll;
         Drops drops;

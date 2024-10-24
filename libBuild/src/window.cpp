@@ -118,7 +118,6 @@ namespace ewin
 		void window_refresh_callback(GLFWwindow* window)
 		{
 			auto* win = static_cast<Window*>(::glfwGetWindowUserPointer(window));
-			//win->updateWindow();
 		}
 
 		void window_focus_callback(GLFWwindow* window, int focused)
