@@ -41,25 +41,25 @@ namespace ewin
         bool active() const;
 
         GLFWwindow* getGLFWwindow();
-        structs::WindowSettings& getSettings();
-        structs::WInput& getInput();
+        WindowSettings& getSettings();
+        WInput& getInput();
 
         bool isCursorEntered() const;
         bool isWindowFocused() const;
         bool isWindowIconified() const;
         bool isWindowMaximized() const;
 
-        bool isKeyPressed(enums::Key key) const;
-        bool isKeyReleased(enums::Key key) const;
-        bool isKeyRepeated(enums::Key key) const;
-        bool wasKeyPressed(enums::Key key) const;
-        bool wasKeyReleased(enums::Key key) const;
+        bool isKeyPressed(Keyboard key) const;
+        bool isKeyReleased(Keyboard key) const;
+        bool isKeyRepeated(Keyboard key) const;
+        bool wasKeyPressed(Keyboard key) const;
+        bool wasKeyReleased(Keyboard key) const;
 
-        bool isButtonPressed(enums::Button button) const;
-        bool isButtonReleased(enums::Button button) const;
-        bool isButtonRepeated(enums::Button button) const;
-        bool wasButtonPressed(enums::Button button) const;
-        bool wasButtonReleased(enums::Button button) const;
+        bool isButtonPressed(MButton button) const;
+        bool isButtonReleased(MButton button) const;
+        bool isButtonRepeated(MButton button) const;
+        bool wasButtonPressed(MButton button) const;
+        bool wasButtonReleased(MButton button) const;
 
         bool hasCursorEntered() const;
         bool hasCursorLeft() const;
@@ -71,12 +71,12 @@ namespace ewin
         bool isScrollDown() const;
 
         bool hasDrops() const;
-        structs::Drops getDrops();
+        Drops getDrops();
 
-        const structs::Key& getKey(enums::Key key) const;
-        const structs::Key& getKeyReset(enums::Key key) const;
-        const structs::Button& getButton(enums::Button button) const;
-        const structs::Button& getButtonReset(enums::Button button) const;
+        const Key& getKey(Keyboard key) const;
+        const Key& getKeyReset(Keyboard key) const;
+        const Button& getButton(MButton button) const;
+        const Button& getButtonReset(MButton button) const;
 
         void iconify()const;
         void restore()const;
@@ -87,8 +87,8 @@ namespace ewin
         void focus() const;
 
         void blockInput(bool block);
-        void setKey(enums::Key key, enums::InputState state, int scancode, int action, int mods);
-        void setButton(enums::Button button, enums::InputState state, int action, int mods);
+        void setKey(Keyboard key, InputState state, int scancode, int action, int mods);
+        void setButton(MButton button, InputState state, int action, int mods);
         void setCursor(double xpos, double ypos);
         void setScroll(double xoffset, double yoffset);
 
@@ -99,8 +99,8 @@ namespace ewin
         GLFWmonitor* monitor;
         GLFWwindow* share;
         std::unordered_map<std::string, GLFWcursor*> cursorMap;
-        structs::WindowSettings settings;
-        structs::WInput input;
+        WindowSettings settings;
+        WInput input;
         bool blockInputFlag;
     };
 }

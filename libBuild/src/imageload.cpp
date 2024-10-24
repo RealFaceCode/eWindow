@@ -6,9 +6,9 @@
 #include <stb_image.h>
 #include <elog.hpp>
 
-namespace ewin::internal
+namespace ewin
 {
-    std::optional<GLFWimage> LoadImage(std::filesystem::path path)
+    std::optional<GLFWimage> LoadImage(const std::filesystem::path& path)
     {
         GLFWimage image;
 		image.pixels = ::stbi_load(path.string().c_str(), &image.width, &image.height, 0, 4);

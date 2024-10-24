@@ -28,16 +28,16 @@ namespace ewin
 			switch (action)
 			{
 			case GLFW_PRESS:
-				input.key[key].state = enums::InputState::PRESSED;
-				input.keyReset[key].state = enums::InputState::PRESSED;
+				input.key[key].state = InputState::PRESSED;
+				input.keyReset[key].state = InputState::PRESSED;
 				break;
 			case GLFW_RELEASE:
-				input.key[key].state = enums::InputState::RELEASED;
-				input.keyReset[key].state = enums::InputState::RELEASED;
+				input.key[key].state = InputState::RELEASED;
+				input.keyReset[key].state = InputState::RELEASED;
 				break;
 			case GLFW_REPEAT:
-				input.key[key].state = enums::InputState::REPEATED;
-				input.keyReset[key].state = enums::InputState::REPEATED;
+				input.key[key].state = InputState::REPEATED;
+				input.keyReset[key].state = InputState::REPEATED;
 				break;
 			}
 		}
@@ -60,12 +60,12 @@ namespace ewin
 			switch (action)
 			{
 			case GLFW_PRESS:
-				input.button[button].state = enums::InputState::PRESSED;
-				input.buttonReset[button].state = enums::InputState::PRESSED;
+				input.button[button].state = InputState::PRESSED;
+				input.buttonReset[button].state = InputState::PRESSED;
 				break;
 			case GLFW_RELEASE:
-				input.button[button].state = enums::InputState::RELEASED;
-				input.buttonReset[button].state = enums::InputState::RELEASED;
+				input.button[button].state = InputState::RELEASED;
+				input.buttonReset[button].state = InputState::RELEASED;
 				break;
 			}
 		}
@@ -86,7 +86,7 @@ namespace ewin
 			auto* win = static_cast<Window*>(::glfwGetWindowUserPointer(window));
 			auto& input = win->getInput();
 			input.isCursorEntered = entered;
-			input.cursorEnter = (entered == GLFW_TRUE) ? enums::CurserEnter::ENTERED : enums::CurserEnter::LEFT;
+			input.cursorEnter = (entered == GLFW_TRUE) ? CurserEnter::ENTERED : CurserEnter::LEFT;
 		}
 
 		void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
@@ -282,7 +282,7 @@ namespace ewin
 	void Window::setIcon(const std::filesystem::path& path)
 	{
 		GLFWimage image;
-		auto img = internal::LoadImage(path);
+		auto img = LoadImage(path);
 		if(!img.has_value())
 		{
 			elog::Error("Failed to set Icon: {}", path.string());
@@ -291,13 +291,13 @@ namespace ewin
 		image = img.value();
 
 		::glfwSetWindowIcon(window, 1, &image);
-		internal::FreeImage(image);
+		FreeImage(image);
 	}
 
 	void Window::addCursor(std::string_view name, const std::filesystem::path& path, int xhot, int yhot)
 	{
 		GLFWimage image;
-		auto img = internal::LoadImage(path);
+		auto img = LoadImage(path);
 		if(!img.has_value())
 			return;
 		image = img.value();
@@ -305,11 +305,11 @@ namespace ewin
 		GLFWcursor* cursor = ::glfwCreateCursor(&image, xhot, yhot);
 		if(cursor == nullptr)
 		{
-			internal::FreeImage(image);
+			FreeImage(image);
 			elog::Error("Failed to create cursor: {}", path.string());
 			return;
 		}
-		internal::FreeImage(image);
+		FreeImage(image);
 
 		auto [it, succes] = cursorMap.insert(std::pair<std::string_view, GLFWcursor*>(name, cursor));
 		if(!succes)
@@ -332,10 +332,10 @@ namespace ewin
     {
 		if(window != nullptr)
 		{
-			internal::ResetCursorEnter(input);
-			internal::ResetScroll(input.scroll);
-			internal::ResetButtons(input);
-			internal::ResetKeys(input);
+			ResetCursorEnter(input);
+			ResetScroll(input.scroll);
+			ResetButtons(input);
+			ResetKeys(input);
 			::glfwSwapBuffers(window);
 			::glfwPollEvents();
 		}
@@ -360,12 +360,12 @@ namespace ewin
         return window;
     }
 
-    structs::WindowSettings& Window::getSettings()
+    WindowSettings& Window::getSettings()
     {
         return settings;
     }
 
-    structs::WInput& Window::getInput()
+    WInput& Window::getInput()
     {
         return input;
     }
@@ -390,66 +390,66 @@ namespace ewin
 		return input.isWindowMaximized;
 	}
 
-	bool Window::isKeyPressed(enums::Key key) const
+	bool Window::isKeyPressed(Keyboard key) const
 	{
-		return input.key[static_cast<int>(key)].state == enums::InputState::PRESSED;
+		return input.key[static_cast<int>(key)].state == InputState::PRESSED;
 	}
 
-	bool Window::isKeyReleased(enums::Key key) const
+	bool Window::isKeyReleased(Keyboard key) const
 	{
-		return  input.key[static_cast<int>(key)].state == enums::InputState::RELEASED 
-		|| input.key[static_cast<int>(key)].state == enums::InputState::NONE;
+		return  input.key[static_cast<int>(key)].state == InputState::RELEASED 
+		|| input.key[static_cast<int>(key)].state == InputState::NONE;
 	}
 
-	bool Window::isKeyRepeated(enums::Key key) const
+	bool Window::isKeyRepeated(Keyboard key) const
 	{
-		return input.key[static_cast<int>(key)].state == enums::InputState::REPEATED;
+		return input.key[static_cast<int>(key)].state == InputState::REPEATED;
 	}
 
-	bool Window::wasKeyPressed(enums::Key key) const
+	bool Window::wasKeyPressed(Keyboard key) const
 	{
-		return input.keyReset[static_cast<int>(key)].state == enums::InputState::PRESSED;
+		return input.keyReset[static_cast<int>(key)].state == InputState::PRESSED;
 	}
 
-	bool Window::wasKeyReleased(enums::Key key) const
+	bool Window::wasKeyReleased(Keyboard key) const
 	{
-		return input.keyReset[static_cast<int>(key)].state == enums::InputState::RELEASED;
+		return input.keyReset[static_cast<int>(key)].state == InputState::RELEASED;
 	}
 
-	bool Window::isButtonPressed(enums::Button button) const
+	bool Window::isButtonPressed(MButton button) const
 	{
-		return input.button[static_cast<int>(button)].state == enums::InputState::PRESSED;
+		return input.button[static_cast<int>(button)].state == InputState::PRESSED;
 	}
 
-	bool Window::isButtonReleased(enums::Button button) const
+	bool Window::isButtonReleased(MButton button) const
 	{
-		return input.button[static_cast<int>(button)].state == enums::InputState::RELEASED
-		|| input.button[static_cast<int>(button)].state == enums::InputState::NONE;
+		return input.button[static_cast<int>(button)].state == InputState::RELEASED
+		|| input.button[static_cast<int>(button)].state == InputState::NONE;
 	}
 
-	bool Window::isButtonRepeated(enums::Button button) const
+	bool Window::isButtonRepeated(MButton button) const
 	{
-		return input.button[static_cast<int>(button)].state == enums::InputState::REPEATED;
+		return input.button[static_cast<int>(button)].state == InputState::REPEATED;
 	}
 
-	bool Window::wasButtonPressed(enums::Button button) const
+	bool Window::wasButtonPressed(MButton button) const
 	{
-		return input.buttonReset[static_cast<int>(button)].state == enums::InputState::PRESSED;
+		return input.buttonReset[static_cast<int>(button)].state == InputState::PRESSED;
 	}
 
-	bool Window::wasButtonReleased(enums::Button button) const
+	bool Window::wasButtonReleased(MButton button) const
 	{
-		return input.buttonReset[static_cast<int>(button)].state == enums::InputState::RELEASED;
+		return input.buttonReset[static_cast<int>(button)].state == InputState::RELEASED;
 	}
 
 	bool Window::hasCursorEntered() const
 	{
-		return input.cursorEnter == enums::CurserEnter::ENTERED;
+		return input.cursorEnter == CurserEnter::ENTERED;
 	}
 
 	bool Window::hasCursorLeft() const
 	{
-		return input.cursorEnter == enums::CurserEnter::LEFT;
+		return input.cursorEnter == CurserEnter::LEFT;
 	}
 
 	double Window::getCursorX() const
@@ -477,29 +477,29 @@ namespace ewin
 		return !input.drops.paths.empty();
 	}
 
-	structs::Drops Window::getDrops()
+	Drops Window::getDrops()
 	{
 		auto drops = input.drops;
 		input.drops.paths.clear();
 		return drops;
 	}
 
-	const structs::Key& Window::getKey(enums::Key key) const
+	const Key& Window::getKey(Keyboard key) const
 	{
 		return input.key[static_cast<int>(key)];
 	}
 
-	const structs::Key& Window::getKeyReset(enums::Key key) const
+	const Key& Window::getKeyReset(Keyboard key) const
 	{
 		return input.keyReset[static_cast<int>(key)];
 	}
 
-	const structs::Button& Window::getButton(enums::Button button) const
+	const Button& Window::getButton(MButton button) const
 	{
 		return input.button[static_cast<int>(button)];
 	}
 
-	const structs::Button& Window::getButtonReset(enums::Button button) const
+	const Button& Window::getButtonReset(MButton button) const
 	{
 		return input.buttonReset[static_cast<int>(button)];
 	}
@@ -544,7 +544,7 @@ namespace ewin
 		blockInputFlag = block;
 	}
 
-	void Window::setKey(enums::Key key, enums::InputState state, int scancode, int action, int mods)
+	void Window::setKey(Keyboard key, InputState state, int scancode, int action, int mods)
 	{
 		auto k = static_cast<int>(key);
 		input.key[k].key = k;
@@ -554,7 +554,7 @@ namespace ewin
 		input.key[k].state = state;
 	}
 
-	void Window::setButton(enums::Button button, enums::InputState state, int action, int mods)
+	void Window::setButton(MButton button, InputState state, int action, int mods)
 	{
 		auto b = static_cast<int>(button);
 		input.button[b].button = b;

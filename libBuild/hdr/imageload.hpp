@@ -5,8 +5,8 @@
 
 struct GLFWimage;
 
-namespace ewin::internal
+namespace ewin
 {
-    std::optional<GLFWimage> LoadImage(std::filesystem::path path);
+    std::optional<GLFWimage> LoadImage(const std::filesystem::path& path);
     void FreeImage(GLFWimage& image);
 }
