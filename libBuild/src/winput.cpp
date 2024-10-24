@@ -1,26 +1,25 @@
 #include "winput.hpp"
 #include <fstream>
+#include <fioc.hpp>
 
 namespace ewin
 {
-
 	std::vector<std::string> Drops::getContexts() const
 	{
 		std::vector<std::string> contexts;
 
 		for(auto& path : paths)
 		{
-			//TODO: rewrite to use eutil
-			FILE* file = ::fopen(path.string().c_str(), "rb");
-			::fseek(file, 0, SEEK_END);
-			long size = ftell(file);
-			::fseek(file, 0, SEEK_SET);
-
+			FILE* file = nullptr;
+			std::string pathStr = path.string();
+			const char* cpath = pathStr.c_str();
+			size_t size = 0;
+			eutil::fioc::GetFileSize(cpath, size);
 			auto* buffer = new char[size + 1];
-			::fread(buffer, 1, size, file);
-			::fclose(file);
 
+			eutil::fioc::ReadDataFromFileRaw(&file, cpath, (void**)&buffer, size, size + 1);
 			buffer[size] = '\0';
+			eutil::fioc::close_file(&file, true);
 
 			contexts.emplace_back(buffer);
 			delete[] buffer;
