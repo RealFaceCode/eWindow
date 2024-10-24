@@ -1,5 +1,5 @@
 #include "ewin.hpp"
-
+#include "lc.hpp"
 
 #include <GLFW/glfw3.h>
 
@@ -11,11 +11,11 @@ namespace ewin
 {
     EWIN_API bool Init()
     {
-        //elog::Init();
+        lc::Init();
 
         if (!::glfwInit())
         {
-            //elog::Error("Failed to initialize eWin");
+            lc::Log<"EWIN">("ERROR", "Failed to initialize GLFW");
             return false;
         }
 

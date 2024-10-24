@@ -1,7 +1,6 @@
 #include "window.hpp"
 #include <GLFW/glfw3.h>
-
-
+#include <log.hpp>
 #include "imageload.hpp"
 
 namespace ewin
@@ -284,7 +283,7 @@ namespace ewin
 		auto img = LoadImage(path);
 		if(!img.has_value())
 		{
-			//elog::Error("Failed to set Icon: {}", path.string());
+			lc::Log<"EWIN">("ERROR", "Failed to set Icon: {}", path.string());
 			return;
 		}
 		image = img.value();
@@ -305,14 +304,14 @@ namespace ewin
 		if(cursor == nullptr)
 		{
 			FreeImage(image);
-			//elog::Error("Failed to create cursor: {}", path.string());
+			lc::Log<"EWIN">("ERROR", "Failed to create cursor: {}", path.string());
 			return;
 		}
 		FreeImage(image);
 
 		auto [it, succes] = cursorMap.insert(std::pair<std::string_view, GLFWcursor*>(name, cursor));
-		if(!succes){}
-			//elog::Error("Failed to add cursor: {}", path.string());
+		if(!succes)
+			lc::Log<"EWIN">("ERROR", "Failed to add cursor: {}", path.string());
 	}
 
 	void Window::setCursor(const std::string& name)
@@ -320,7 +319,7 @@ namespace ewin
 		auto it = cursorMap.find(name);
 		if(it == cursorMap.end())
 		{
-			//elog::Error("Failed to set cursor: {}", name);
+			lc::Log<"EWIN">("ERROR", "Failed to set cursor: {}", name);
 			return;
 		}
 		auto cursor = it->second;
