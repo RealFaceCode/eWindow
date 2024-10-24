@@ -10,7 +10,7 @@ namespace ewin
     {
         void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 		{
-			Window* win = static_cast<Window*>(glfwGetWindowUserPointer(window));
+			auto* win = static_cast<Window*>(::glfwGetWindowUserPointer(window));
 			if(win->isInputBlocked())
 				return;
 
@@ -44,7 +44,7 @@ namespace ewin
 
 		void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 		{
-			Window* win = static_cast<Window*>(glfwGetWindowUserPointer(window));
+			auto* win = static_cast<Window*>(::glfwGetWindowUserPointer(window));
 			if(win->isInputBlocked())
 				return;
 
@@ -72,7 +72,7 @@ namespace ewin
 
 		void cursor_position_callback(GLFWwindow* window, double xpos, double ypos)
 		{
-			Window* win = static_cast<Window*>(glfwGetWindowUserPointer(window));
+			auto* win = static_cast<Window*>(::glfwGetWindowUserPointer(window));
 			if(win->isInputBlocked())
 				return;
 
@@ -83,7 +83,7 @@ namespace ewin
 
 		void cursor_enter_callback(GLFWwindow* window, int entered)
 		{
-			Window* win = static_cast<Window*>(glfwGetWindowUserPointer(window));
+			auto* win = static_cast<Window*>(::glfwGetWindowUserPointer(window));
 			auto& input = win->getInput();
 			input.isCursorEntered = entered;
 			input.cursorEnter = (entered == GLFW_TRUE) ? enums::CurserEnter::ENTERED : enums::CurserEnter::LEFT;
@@ -91,7 +91,7 @@ namespace ewin
 
 		void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 		{
-			Window* win = static_cast<Window*>(glfwGetWindowUserPointer(window));
+			auto* win = static_cast<Window*>(::glfwGetWindowUserPointer(window));
 			if(win->isInputBlocked())
 				return;
 
@@ -102,7 +102,7 @@ namespace ewin
 
 		void window_size_callback(GLFWwindow* window, int width, int height)
 		{
-			Window* win = static_cast<Window*>(glfwGetWindowUserPointer(window));
+			auto* win = static_cast<Window*>(::glfwGetWindowUserPointer(window));
 			auto& settings = win->getSettings();
 			settings.width = width;
 			settings.height = height;
@@ -110,20 +110,20 @@ namespace ewin
 
 		void window_close_callback(GLFWwindow* window)
 		{
-			Window* win = static_cast<Window*>(glfwGetWindowUserPointer(window));
+			auto* win = static_cast<Window*>(::glfwGetWindowUserPointer(window));
 			win->getSettings().width = 0;
 			win->getSettings().height = 0;
 		}
 
 		void window_refresh_callback(GLFWwindow* window)
 		{
-			Window* win = static_cast<Window*>(glfwGetWindowUserPointer(window));
+			auto* win = static_cast<Window*>(::glfwGetWindowUserPointer(window));
 			//win->updateWindow();
 		}
 
 		void window_focus_callback(GLFWwindow* window, int focused)
 		{
-			Window* win = static_cast<Window*>(glfwGetWindowUserPointer(window));
+			auto* win = static_cast<Window*>(::glfwGetWindowUserPointer(window));
 			win->getInput().isWindowFocused = focused;
 		}
 
@@ -137,7 +137,7 @@ namespace ewin
 
 		void window_maximize_callback(GLFWwindow* window, int maximized)
 		{
-			Window* win = static_cast<Window*>(glfwGetWindowUserPointer(window));
+			auto* win = static_cast<Window*>(::glfwGetWindowUserPointer(window));
 			auto& input = win->getInput();
 			input.isWindowMaximized = maximized;
 			input.isWindowIconified = false;
@@ -145,20 +145,19 @@ namespace ewin
 
 		static void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 		{
-			Window* win = static_cast<Window*>(glfwGetWindowUserPointer(window));
+			auto* win = static_cast<Window*>(::glfwGetWindowUserPointer(window));
 			win->getSettings().width = width;
 			win->getSettings().height = height;
 		}
 
 		void drop_callback(GLFWwindow* window, int count, const char** paths)
 		{
-			Window* win = static_cast<Window*>(glfwGetWindowUserPointer(window));
+			auto* win = static_cast<Window*>(::glfwGetWindowUserPointer(window));
 			auto& input = win->getInput();
 			input.drops.paths.clear();
+			input.drops.paths.reserve(count);
 			for (int i = 0; i < count; i++)
-			{
-				input.drops.paths.push_back(paths[i]);
-			}
+				input.drops.paths.emplace_back(paths[i]);
 		}
     }
 
@@ -201,11 +200,11 @@ namespace ewin
     Window::~Window()
     {
 		for(auto& [name, cursor] : cursorMap)
-			glfwDestroyCursor(cursor);
+			::glfwDestroyCursor(cursor);
 		cursorMap.clear();
 		if(window != nullptr)
 		{
-			glfwDestroyWindow(window);
+			::glfwDestroyWindow(window);
 			window = nullptr;
 		}
 		if(monitor != nullptr)
@@ -216,7 +215,7 @@ namespace ewin
 
     bool Window::build()
     {
-        window = glfwCreateWindow(settings.width, settings.height, settings.title.c_str(), monitor, share);
+        window = ::glfwCreateWindow(settings.width, settings.height, settings.title.c_str(), monitor, share);
 		if (!window)
 		{
 			elog::Error("Failed to create window with title: {}, size: {}x{}", settings.title, settings.width, settings.height);
@@ -229,58 +228,58 @@ namespace ewin
 
     void Window::setContext()
     {
-        glfwMakeContextCurrent(window);
-        glfwSetWindowUserPointer(window, this);
+        ::glfwMakeContextCurrent(window);
+        ::glfwSetWindowUserPointer(window, this);
 		setCallBacks();
     }
 
     void Window::setCallBacks()
     {
-        glfwSetKeyCallback(window, internal::callback::key_callback);
-        glfwSetMouseButtonCallback(window, internal::callback::mouse_button_callback);
-        glfwSetCursorPosCallback(window, internal::callback::cursor_position_callback);
-        glfwSetCursorEnterCallback(window, internal::callback::cursor_enter_callback);
-        glfwSetScrollCallback(window, internal::callback::scroll_callback);
-        glfwSetWindowSizeCallback(window, internal::callback::window_size_callback);
-        glfwSetWindowCloseCallback(window, internal::callback::window_close_callback);
-        glfwSetWindowRefreshCallback(window, internal::callback::window_refresh_callback);
-        glfwSetWindowFocusCallback(window, internal::callback::window_focus_callback);
-        glfwSetWindowIconifyCallback(window, internal::callback::window_iconify_callback);
-        glfwSetFramebufferSizeCallback(window, internal::callback::framebuffer_size_callback);
-        glfwSetDropCallback(window, internal::callback::drop_callback);
+        ::glfwSetKeyCallback(window, internal::callback::key_callback);
+        ::glfwSetMouseButtonCallback(window, internal::callback::mouse_button_callback);
+        ::glfwSetCursorPosCallback(window, internal::callback::cursor_position_callback);
+        ::glfwSetCursorEnterCallback(window, internal::callback::cursor_enter_callback);
+        ::glfwSetScrollCallback(window, internal::callback::scroll_callback);
+        ::glfwSetWindowSizeCallback(window, internal::callback::window_size_callback);
+        ::glfwSetWindowCloseCallback(window, internal::callback::window_close_callback);
+        ::glfwSetWindowRefreshCallback(window, internal::callback::window_refresh_callback);
+        ::glfwSetWindowFocusCallback(window, internal::callback::window_focus_callback);
+        ::glfwSetWindowIconifyCallback(window, internal::callback::window_iconify_callback);
+        ::glfwSetFramebufferSizeCallback(window, internal::callback::framebuffer_size_callback);
+        ::glfwSetDropCallback(window, internal::callback::drop_callback);
     }
 
 	void Window::setPos(int x, int y)
 	{
-		glfwSetWindowPos(window, x, y);
+		::glfwSetWindowPos(window, x, y);
 	}
 
 	void Window::setSize(int width, int height)
 	{
-		glfwSetWindowSize(window, width, height);
+		::glfwSetWindowSize(window, width, height);
 		settings.width = width;
 		settings.height = height;
 	}
 
 	void Window::setAspectRatio(int numer, int denom)
 	{
-		glfwSetWindowAspectRatio(window, numer, denom);
-		glfwGetWindowSize(window, &settings.width, &settings.height);
+		::glfwSetWindowAspectRatio(window, numer, denom);
+		::glfwGetWindowSize(window, &settings.width, &settings.height);
 	}
 
 	void Window::setTitle(const char* title)
 	{
-		glfwSetWindowTitle(window, title);
+		::glfwSetWindowTitle(window, title);
 		settings.title = title;
 	}
 
 	void Window::setOpacity(float opacity)
 	{
-		glfwSetWindowOpacity(window, opacity);
+		::glfwSetWindowOpacity(window, opacity);
 		settings.opacity = opacity;
 	}
 
-	void Window::setIcon(std::filesystem::path path)
+	void Window::setIcon(const std::filesystem::path& path)
 	{
 		GLFWimage image;
 		auto img = internal::LoadImage(path);
@@ -291,11 +290,11 @@ namespace ewin
 		}
 		image = img.value();
 
-		glfwSetWindowIcon(window, 1, &image);
+		::glfwSetWindowIcon(window, 1, &image);
 		internal::FreeImage(image);
 	}
 
-	void Window::addCursor(std::string_view name, std::filesystem::path path, int xhot, int yhot)
+	void Window::addCursor(std::string_view name, const std::filesystem::path& path, int xhot, int yhot)
 	{
 		GLFWimage image;
 		auto img = internal::LoadImage(path);
@@ -303,7 +302,7 @@ namespace ewin
 			return;
 		image = img.value();
 
-		GLFWcursor* cursor = glfwCreateCursor(&image, xhot, yhot);
+		GLFWcursor* cursor = ::glfwCreateCursor(&image, xhot, yhot);
 		if(cursor == nullptr)
 		{
 			internal::FreeImage(image);
@@ -314,9 +313,7 @@ namespace ewin
 
 		auto [it, succes] = cursorMap.insert(std::pair<std::string_view, GLFWcursor*>(name, cursor));
 		if(!succes)
-		{
 			elog::Error("Failed to add cursor: {}", path.string());
-		}
 	}
 
 	void Window::setCursor(const std::string& name)
@@ -328,7 +325,7 @@ namespace ewin
 			return;
 		}
 		auto cursor = it->second;
-		glfwSetCursor(window, cursor);
+		::glfwSetCursor(window, cursor);
 	}
 
     void Window::update()
@@ -339,15 +336,15 @@ namespace ewin
 			internal::ResetScroll(input.scroll);
 			internal::ResetButtons(input);
 			internal::ResetKeys(input);
-			glfwSwapBuffers(window);
-			glfwPollEvents();
+			::glfwSwapBuffers(window);
+			::glfwPollEvents();
 		}
     }
 
     void Window::close()
     {
-        glfwSetWindowShouldClose(window, GLFW_TRUE);
-		glfwDestroyWindow(window);
+        ::glfwSetWindowShouldClose(window, GLFW_TRUE);
+		::glfwDestroyWindow(window);
 		window = nullptr;
     }
 
@@ -509,37 +506,37 @@ namespace ewin
 
 	void Window::iconify() const
 	{
-		glfwIconifyWindow(window);
+		::glfwIconifyWindow(window);
 	}
 
 	void Window::restore() const
 	{
-		glfwRestoreWindow(window);
+		::glfwRestoreWindow(window);
 	}
 
 	void Window::maximize() const
 	{
-		glfwMaximizeWindow(window);
+		::glfwMaximizeWindow(window);
 	}
 
 	void Window::show() const
 	{
-		glfwShowWindow(window);
+		::glfwShowWindow(window);
 	}
 
 	void Window::hide() const
 	{
-		glfwHideWindow(window);
+		::glfwHideWindow(window);
 	}
 
 	void Window::noteify() const
 	{
-		glfwRequestWindowAttention(window);
+		::glfwRequestWindowAttention(window);
 	}
 
 	void Window::focus() const
 	{
-		glfwFocusWindow(window);
+		::glfwFocusWindow(window);
 	}
 
 	void Window::blockInput(bool block)
@@ -549,7 +546,7 @@ namespace ewin
 
 	void Window::setKey(enums::Key key, enums::InputState state, int scancode, int action, int mods)
 	{
-		int k = static_cast<int>(key);
+		auto k = static_cast<int>(key);
 		input.key[k].key = k;
 		input.key[k].scancode = scancode;
 		input.key[k].action = action;
@@ -559,7 +556,7 @@ namespace ewin
 
 	void Window::setButton(enums::Button button, enums::InputState state, int action, int mods)
 	{
-		int b = static_cast<int>(button);
+		auto b = static_cast<int>(button);
 		input.button[b].button = b;
 		input.button[b].action = action;
 		input.button[b].mods = mods;

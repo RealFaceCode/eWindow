@@ -32,8 +32,8 @@ namespace ewin
         void setAspectRatio(int numer, int denom);
         void setTitle(const char* title);
         void setOpacity(float opacity);
-        void setIcon(std::filesystem::path path);
-        void addCursor(std::string_view name, std::filesystem::path path, int xhot, int yhot);
+        void setIcon(const std::filesystem::path& path);
+        void addCursor(std::string_view name, const std::filesystem::path& path, int xhot, int yhot);
         void setCursor(const std::string& name);
 
         void update();

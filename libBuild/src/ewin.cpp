@@ -13,7 +13,7 @@ namespace ewin
     {
         elog::Init();
 
-        if (!glfwInit())
+        if (!::glfwInit())
         {
             elog::Error("Failed to initialize eWin");
             return false;
@@ -31,7 +31,7 @@ namespace ewin
     {
         #if _WIN32
             HWND console = GetConsoleWindow();
-            ShowWindow(console, SW_HIDE);
+            ::ShowWindow(console, SW_HIDE);
         #endif
     }
 
@@ -39,14 +39,14 @@ namespace ewin
     {
         #if _WIN32
             HWND console = GetConsoleWindow();
-            ShowWindow(console, SW_SHOW);
+            ::ShowWindow(console, SW_SHOW);
         #endif
     }
 
     void CloseTerminal()
     {
         #if _WIN32
-            FreeConsole();
+            ::FreeConsole();
         #endif
     }
 }

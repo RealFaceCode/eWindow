@@ -11,7 +11,7 @@ namespace ewin::internal
     std::optional<GLFWimage> LoadImage(std::filesystem::path path)
     {
         GLFWimage image;
-		image.pixels = stbi_load(path.string().c_str(), &image.width, &image.height, 0, 4);
+		image.pixels = ::stbi_load(path.string().c_str(), &image.width, &image.height, 0, 4);
 		if(image.pixels == nullptr)
 		{
 			elog::Error("Failed to load image: {}", path.string());
@@ -22,6 +22,6 @@ namespace ewin::internal
 
     void FreeImage(GLFWimage& image)
     {
-        stbi_image_free(image.pixels);
+        ::stbi_image_free(image.pixels);
     }
 }
