@@ -156,6 +156,7 @@ namespace ewin
 			input.drops.paths.reserve(count);
 			for (int i = 0; i < count; i++)
 				input.drops.paths.emplace_back(paths[i]);
+			input.drops.count = count;
 		}
     }
 

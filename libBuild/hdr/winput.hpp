@@ -2,6 +2,7 @@
 #include <filesystem>
 #include <vector>
 #include <array>
+#include <ahc.hpp>
 
 #include "defines.hpp"
 
@@ -204,11 +205,13 @@ namespace ewin
         double yoffset;
     };
 
+
     struct EWIN_API Drops
     {
     public:
-        std::vector<std::string> getContexts() const;
+        eutil::ahc::Array getContexts() const;
         std::vector<std::filesystem::path> paths;
+        size_t count;
     };
 
     struct WInput

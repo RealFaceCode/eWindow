@@ -1,12 +1,13 @@
 #include "winput.hpp"
 #include <fstream>
 #include <fioc.hpp>
+#include <ahc.hpp>
 
 namespace ewin
 {
-	std::vector<std::string> Drops::getContexts() const
+	eutil::ahc::Array Drops::getContexts() const
 	{
-		std::vector<std::string> contexts;
+		eutil::ahc::Array contexts;
 
 		for(auto& path : paths)
 		{
@@ -21,8 +22,10 @@ namespace ewin
 			buffer[size] = '\0';
 			eutil::fioc::close_file(&file, true);
 
-			contexts.emplace_back(buffer);
+			eutil::ahc::WriteToArray(contexts, size);
+			eutil::ahc::WriteToArray(contexts, buffer, size);
 			delete[] buffer;
+
 		}
 		return contexts;
 	}
