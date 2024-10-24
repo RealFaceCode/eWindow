@@ -1,3 +1,9 @@
 [submodule "thirdparty/glfw"]
 	path = thirdparty/glfw
 	url = https://github.com/glfw/glfw.git
+[submodule "thirdparty/LogCraft"]
+	path = thirdparty/LogCraft
+	url = https://github.com/RealFaceCode/LogCraft.git
+[submodule "thirdparty/eUtil"]
+	path = thirdparty/eUtil
+	url = https://github.com/RealFaceCode/eUtil.git
