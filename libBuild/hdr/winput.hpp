@@ -216,6 +216,7 @@ namespace ewin
 
     struct WInput
     {
+    public:
         std::array<Button, expr::MaxMButton> button;
         std::array<Button, expr::MaxMButton> buttonReset;
         std::array<Key, expr::MaxKeyboard> key;
