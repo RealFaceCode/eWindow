@@ -280,10 +280,12 @@ namespace ewin
 		::glfwGetWindowSize(window, &settings.width, &settings.height);
 	}
 
-	void Window::setTitle(const char* title)
+	void Window::setTitle(const char* title, bool changeSettings)
 	{
 		::glfwSetWindowTitle(window, title);
-		settings.title = title;
+		if (changeSettings)
+			settings.title = title;
+		
 	}
 
 	void Window::setOpacity(float opacity)
@@ -607,5 +609,20 @@ namespace ewin
 	std::pair<int, int> Window::getPos() const
 	{
 		return {settings.xpos, settings.ypos};
+	}
+
+	void Window::updateFPS()
+	{
+		static double lastTime = 0;
+		static int nbFrames = 0;
+		double currentTime = glfwGetTime();
+		nbFrames++;
+		if (currentTime - lastTime >= 0.25)
+		{
+			std::string title = settings.title + " | FPS: [" + std::to_string(nbFrames) + "]";
+			setTitle(title.c_str(), false);
+			nbFrames = 0;
+			lastTime += 1.0;
+		}
 	}
 }

@@ -30,7 +30,7 @@ namespace ewin
         void setPos(int x, int y);
         void setSize(int width, int height);
         void setAspectRatio(int numer, int denom);
-        void setTitle(const char* title);
+        void setTitle(const char* title, bool changeSettings = true);
         void setOpacity(float opacity);
         void setIcon(const std::filesystem::path& path);
         void addCursor(std::string_view name, const std::filesystem::path& path, int xhot, int yhot);
@@ -97,6 +97,8 @@ namespace ewin
         std::pair<int, int> getFrameBufferSize() const;
         std::pair<int, int> getWindowSize() const;
         std::pair<int, int> getPos() const;
+
+        void updateFPS();
 
     private:
         GLFWwindow* window;
