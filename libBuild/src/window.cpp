@@ -7,6 +7,8 @@ namespace ewin
 {
     namespace internal::callback
     {
+		
+
         void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 		{
 			auto* win = static_cast<Window*>(::glfwGetWindowUserPointer(window));
@@ -227,6 +229,11 @@ namespace ewin
 
     bool Window::build()
     {
+		glfwSetErrorCallback([](int error, const char* description)
+		{
+			lc::Log<"EWIN">("ERROR", "GLFW Error[{}]: {}", error, description);
+		});
+		
         window = ::glfwCreateWindow(settings.width, settings.height, settings.title.c_str(), monitor, share);
 		if (!window)
 		{
