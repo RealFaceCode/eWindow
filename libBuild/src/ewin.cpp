@@ -50,8 +50,8 @@ namespace ewin
         #endif
     }
 
-    EWIN_API glproc GetProcAddress(const char* name)
+    EWIN_API loadproc GetProcAddress(const char* name)
     {
-        return ::glfwGetProcAddress(name);
+        return reinterpret_cast<loadproc>(::glfwGetProcAddress(name));
     }
 }

@@ -3,7 +3,7 @@
 #include "window.hpp"
 #include "defines.hpp"
 
-typedef void (*glproc)(void);
+typedef void* (*loadproc)(const char *name);
 
 namespace ewin
 {
@@ -13,5 +13,5 @@ namespace ewin
     EWIN_API void ShowTerminal();
     EWIN_API void CloseTerminal();
 
-    EWIN_API glproc GetProcAddress(const char* name);
+    EWIN_API loadproc GetProcAddress(const char* name);
 }
