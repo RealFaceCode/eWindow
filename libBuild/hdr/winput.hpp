@@ -205,7 +205,6 @@ namespace ewin
         double yoffset;
     };
 
-
     struct EWIN_API Drops
     {
     public:

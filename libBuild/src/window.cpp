@@ -99,6 +99,13 @@ namespace ewin
 			input.scroll.yoffset = yoffset;
 		}
 
+		void window_pos_callback(GLFWwindow* window, int xpos, int ypos)
+		{
+			auto* win = static_cast<Window*>(::glfwGetWindowUserPointer(window));
+			win->getSettings().xpos = xpos;
+			win->getSettings().ypos = ypos;
+		}
+
 		void window_size_callback(GLFWwindow* window, int width, int height)
 		{
 			auto* win = static_cast<Window*>(::glfwGetWindowUserPointer(window));
@@ -144,8 +151,8 @@ namespace ewin
 		static void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 		{
 			auto* win = static_cast<Window*>(::glfwGetWindowUserPointer(window));
-			win->getSettings().width = width;
-			win->getSettings().height = height;
+			win->getSettings().fbWidth = width;
+			win->getSettings().fbHeight = height;
 		}
 
 		void drop_callback(GLFWwindow* window, int count, const char** paths)
@@ -217,7 +224,7 @@ namespace ewin
         window = ::glfwCreateWindow(settings.width, settings.height, settings.title.c_str(), monitor, share);
 		if (!window)
 		{
-			//elog::Error("Failed to create window with title: {}, size: {}x{}", settings.title, settings.width, settings.height);
+			lc::Log<"EWIN">("ERROR", "Failed to create window with title: {}, size: {}x{}", settings.title, settings.width, settings.height);
 			return false;
 		}
 
@@ -239,6 +246,7 @@ namespace ewin
         ::glfwSetCursorPosCallback(window, internal::callback::cursor_position_callback);
         ::glfwSetCursorEnterCallback(window, internal::callback::cursor_enter_callback);
         ::glfwSetScrollCallback(window, internal::callback::scroll_callback);
+		::glfwSetWindowPosCallback(window, internal::callback::window_pos_callback);
         ::glfwSetWindowSizeCallback(window, internal::callback::window_size_callback);
         ::glfwSetWindowCloseCallback(window, internal::callback::window_close_callback);
         ::glfwSetWindowRefreshCallback(window, internal::callback::window_refresh_callback);
@@ -578,5 +586,20 @@ namespace ewin
 	bool Window::isInputBlocked() const
 	{
 		return blockInputFlag;
+	}
+
+	std::pair<int, int> Window::getFrameBufferSize() const
+	{	
+		return {settings.fbWidth, settings.fbHeight};
+	}
+
+	std::pair<int, int> Window::getWindowSize() const
+	{
+		return {settings.width, settings.height};
+	}
+
+	std::pair<int, int> Window::getPos() const
+	{
+		return {settings.xpos, settings.ypos};
 	}
 }

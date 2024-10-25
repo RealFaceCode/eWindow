@@ -3,7 +3,6 @@
 #include <filesystem>
 #include <vector>
 #include <unordered_map>
-
 #include "wsettings.hpp"
 #include "winput.hpp"
 #include "defines.hpp"
@@ -94,6 +93,10 @@ namespace ewin
         void setScroll(double xoffset, double yoffset);
 
         bool isInputBlocked() const;
+
+        std::pair<int, int> getFrameBufferSize() const;
+        std::pair<int, int> getWindowSize() const;
+        std::pair<int, int> getPos() const;
 
     private:
         GLFWwindow* window;
