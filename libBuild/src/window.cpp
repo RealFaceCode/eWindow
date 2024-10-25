@@ -174,6 +174,8 @@ namespace ewin
 		{
 			.width = 0,
 			.height = 0,
+			.fbWidth = 0,
+			.fbHeight = 0,
 			.title = "",
 			.opacity = 1.0f
 		};
@@ -186,6 +188,8 @@ namespace ewin
 		{
 			.width = width,
 			.height = height,
+			.fbWidth = width,
+			.fbHeight = height,
 			.title = title,
 			.opacity = 1.0f
 		};
@@ -198,6 +202,8 @@ namespace ewin
 		{
 			.width = width,
 			.height = height,
+			.fbWidth = width,
+			.fbHeight = height,
 			.title = title,
 			.opacity = 1.0f
 		};
