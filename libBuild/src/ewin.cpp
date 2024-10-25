@@ -49,4 +49,9 @@ namespace ewin
             ::FreeConsole();
         #endif
     }
+
+    EWIN_API glproc GetProcAddress(const char* name)
+    {
+        return ::glfwGetProcAddress(name);
+    }
 }
