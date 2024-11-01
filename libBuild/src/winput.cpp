@@ -107,5 +107,8 @@ namespace ewin
 		input.isWindowFocused = false;
 		input.isWindowIconified = false;
 		input.isWindowMaximized = false;
+
+		input.wasResized = false;
+		input.wasMoved = false;
 	}
 }

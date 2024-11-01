@@ -228,6 +228,8 @@ namespace ewin
         bool isWindowFocused;
         bool isWindowIconified;
         bool isWindowMaximized;
+        bool wasResized;
+        bool wasMoved;
     };
 
 

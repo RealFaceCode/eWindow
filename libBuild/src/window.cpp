@@ -106,6 +106,9 @@ namespace ewin
 			auto* win = static_cast<Window*>(::glfwGetWindowUserPointer(window));
 			win->getSettings().xpos = xpos;
 			win->getSettings().ypos = ypos;
+			
+			auto& input = win->getInput();
+			input.wasMoved = true;
 		}
 
 		void window_size_callback(GLFWwindow* window, int width, int height)
@@ -114,6 +117,9 @@ namespace ewin
 			auto& settings = win->getSettings();
 			settings.width = width;
 			settings.height = height;
+
+			auto& input = win->getInput();
+			input.wasResized = true;
 		}
 
 		void window_close_callback(GLFWwindow* window)
@@ -148,6 +154,7 @@ namespace ewin
 			auto& input = win->getInput();
 			input.isWindowMaximized = maximized;
 			input.isWindowIconified = false;
+			input.wasResized = true;
 		}
 
 		static void framebuffer_size_callback(GLFWwindow* window, int width, int height)
@@ -462,6 +469,16 @@ namespace ewin
 	bool Window::wasButtonReleased(MButton button) const
 	{
 		return input.buttonReset[static_cast<int>(button)].state == InputState::RELEASED;
+	}
+
+	bool Window::wasResized() const
+	{
+		return input.wasResized;
+	}
+
+	bool Window::wasMoved() const
+	{
+		return input.wasMoved;
 	}
 
 	bool Window::hasCursorEntered() const

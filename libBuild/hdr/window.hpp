@@ -61,6 +61,9 @@ namespace ewin
         bool wasButtonPressed(MButton button) const;
         bool wasButtonReleased(MButton button) const;
 
+        bool wasResized() const;
+        bool wasMoved() const;
+
         bool hasCursorEntered() const;
         bool hasCursorLeft() const;
 
