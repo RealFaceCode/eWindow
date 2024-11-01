@@ -102,6 +102,8 @@ namespace ewin
         std::pair<int, int> getPos() const;
 
         void updateFPS();
+        double getFPS() const;
+        double getDeltaTime() const;
 
     private:
         GLFWwindow* window;
@@ -111,5 +113,6 @@ namespace ewin
         WindowSettings settings;
         WInput input;
         bool blockInputFlag;
+        floaztfps;
     };
 }

@@ -644,8 +644,23 @@ namespace ewin
 		{
 			std::string title = settings.title + " | FPS: [" + std::to_string(nbFrames) + "]";
 			setTitle(title.c_str(), false);
+			fps = nbFrames / (currentTime - lastTime);
 			nbFrames = 0;
 			lastTime += 1.0;
 		}
+	}
+
+	double Window::getFPS() const
+	{
+		return fps;
+	}
+
+	double Window::getDeltaTime() const
+	{
+		static double lastTime = 0;
+		double currentTime = glfwGetTime();
+		double deltaTime = currentTime - lastTime;
+		lastTime = currentTime;
+		return deltaTime;
 	}
 }
