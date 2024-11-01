@@ -113,6 +113,6 @@ namespace ewin
         WindowSettings settings;
         WInput input;
         bool blockInputFlag;
-        floaztfps;
+        float fps;
     };
 }
