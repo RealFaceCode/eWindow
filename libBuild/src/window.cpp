@@ -425,7 +425,8 @@ namespace ewin
 
 	bool Window::isKeyPressed(Keyboard key) const
 	{
-		return input.key[static_cast<int>(key)].state == InputState::PRESSED;
+		return input.key[static_cast<int>(key)].state == InputState::PRESSED
+		|| input.key[static_cast<int>(key)].state == InputState::REPEATED;
 	}
 
 	bool Window::isKeyReleased(Keyboard key) const
