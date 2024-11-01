@@ -360,6 +360,11 @@ namespace ewin
     {
 		if(window != nullptr)
 		{
+			double currentTime = glfwGetTime();
+			deltaTime = currentTime - lastTime;
+			lastTime = currentTime;
+			elapsedTime += deltaTime;
+
 			ResetCursorEnter(input);
 			ResetScroll(input.scroll);
 			ResetButtons(input);
@@ -657,10 +662,11 @@ namespace ewin
 
 	double Window::getDeltaTime() const
 	{
-		static double lastTime = 0;
-		double currentTime = glfwGetTime();
-		double deltaTime = currentTime - lastTime;
-		lastTime = currentTime;
 		return deltaTime;
+	}
+
+	double Window::getElapsedTime() const
+	{
+		return elapsedTime;
 	}
 }

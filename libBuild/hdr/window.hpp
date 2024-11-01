@@ -104,6 +104,7 @@ namespace ewin
         void updateFPS();
         double getFPS() const;
         double getDeltaTime() const;
+        double getElapsedTime() const;
 
     private:
         GLFWwindow* window;
@@ -113,6 +114,9 @@ namespace ewin
         WindowSettings settings;
         WInput input;
         bool blockInputFlag;
+        double lastTime;
+        double deltaTime;
+        double elapsedTime;
         float fps;
     };
 }
