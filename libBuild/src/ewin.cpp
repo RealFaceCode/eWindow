@@ -24,6 +24,7 @@ namespace ewin
 
     EWIN_API void Terminate()
     {
+        lc::DeInit();
         glfwTerminate();
     }
 
