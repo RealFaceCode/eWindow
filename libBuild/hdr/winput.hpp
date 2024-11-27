@@ -212,6 +212,11 @@ namespace ewin
         std::pair<double, double> mouseDelta;
         std::pair<double, double> scroll;
         bool wasMouseMoved;
+        bool wasKeyboardUsed;
+        Key lastPressedKey;
+        Key lastReleasedKey;
+        Button lastPressedButton;
+        Button lastReleasedButton;
     };
 
     EWIN_API void ResetButtons(IOKMBuffer& input);

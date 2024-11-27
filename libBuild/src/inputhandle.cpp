@@ -7,6 +7,7 @@ namespace ewin
     namespace callback
     {
 #pragma region Input Callbacks
+
         void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
         {
             auto io = GetInputHandle();
@@ -29,16 +30,21 @@ namespace ewin
 			case GLFW_PRESS:
 				buf.key[key].state = InputState::PRESSED;
 				buf.keyReset[key].state = InputState::PRESSED;
+                buf.lastPressedKey = buf.key[key];
 				break;
 			case GLFW_RELEASE:
 				buf.key[key].state = InputState::RELEASED;
 				buf.keyReset[key].state = InputState::RELEASED;
+                buf.lastReleasedKey = buf.key[key];
 				break;
 			case GLFW_REPEAT:
 				buf.key[key].state = InputState::REPEATED;
 				buf.keyReset[key].state = InputState::REPEATED;
+                buf.lastPressedKey = buf.key[key];
 				break;
 			}
+
+            buf.wasKeyboardUsed = true;
         }
 
         void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
@@ -61,10 +67,12 @@ namespace ewin
 			case GLFW_PRESS:
 				buf.button[button].state = InputState::PRESSED;
 				buf.buttonReset[button].state = InputState::PRESSED;
+                buf.lastPressedButton = buf.button[button];
 				break;
 			case GLFW_RELEASE:
 				buf.button[button].state = InputState::RELEASED;
 				buf.buttonReset[button].state = InputState::RELEASED;
+                buf.lastReleasedButton = buf.button[button];
 				break;
 			}
         }
@@ -204,6 +212,7 @@ namespace ewin
 
         buf.scroll = {0.0, 0.0};
         buf.wasMouseMoved = false;
+        buf.wasKeyboardUsed = false;
     }
 
     bool InputHandleKM::isKeyPressed(Keyboard key) const
@@ -294,6 +303,11 @@ namespace ewin
         return input.scroll.second < 0;
     }
 
+    bool InputHandleKM::wasKeyboardUsed() const
+    {
+        return input.wasKeyboardUsed;
+    }
+
     const Key& InputHandleKM::getKey(Keyboard key) const
     {
         return input.key[static_cast<int>(key)];
@@ -316,22 +330,22 @@ namespace ewin
 
     const Key& InputHandleKM::getPressedKey() const
     {
-
+        return input.lastPressedKey;
     }
 
     const Button& InputHandleKM::getPressedButton() const
     {
-
+        return input.lastPressedButton;
     }
 
     const Key& InputHandleKM::getReleasedKey() const
     {
-
+        return input.lastReleasedKey;
     }
 
     const Button& InputHandleKM::getReleasedButton() const
     {
-
+        return input.lastReleasedButton;
     }
 
     void InputHandleKM::blockInput(bool block)

@@ -39,6 +39,17 @@ namespace ewin
 			input.buttonReset[i].action = 0;
 			input.buttonReset[i].mods = 0;
 		}
+
+		input.lastPressedButton.state = InputState::NONE;
+		input.lastPressedButton.button = 0;
+		input.lastPressedButton.action = 0;
+		input.lastPressedButton.mods = 0;
+
+		input.lastReleasedButton.state = InputState::NONE;
+		input.lastReleasedButton.button = 0;
+		input.lastReleasedButton.action = 0;
+		input.lastReleasedButton.mods = 0;
+
 	}
 
 	EWIN_API void ResetKeys(IOKMBuffer& input)
@@ -51,6 +62,18 @@ namespace ewin
 			input.keyReset[i].action = 0;
 			input.keyReset[i].mods = 0;
 		}
+
+		input.lastPressedKey.state = InputState::NONE;
+		input.lastPressedKey.key = 0;
+		input.lastPressedKey.scancode = 0;
+		input.lastPressedKey.action = 0;
+		input.lastPressedKey.mods = 0;
+
+		input.lastReleasedKey.state = InputState::NONE;
+		input.lastReleasedKey.key = 0;
+		input.lastReleasedKey.scancode = 0;
+		input.lastReleasedKey.action = 0;
+		input.lastReleasedKey.mods = 0;
 	}
 
 	EWIN_API void ResetCursorEnter(IOWBuffer& input)
@@ -62,25 +85,16 @@ namespace ewin
 	{
 		for (int i = 0; i < expr::MaxMButton; i++)
 		{
-			iokmbuffer.button[i].state = InputState::NONE;
-			iokmbuffer.button[i].button = 0;
-			iokmbuffer.button[i].action = 0;
-			iokmbuffer.button[i].mods = 0;
-
 			iokmbuffer.buttonReset[i].state = InputState::NONE;
 			iokmbuffer.buttonReset[i].button = 0;
 			iokmbuffer.buttonReset[i].action = 0;
 			iokmbuffer.buttonReset[i].mods = 0;
 		}
 
+		ResetButtons(iokmbuffer);
+
 		for (int i = 0; i < expr::MaxKeyboard; i++)
 		{
-			iokmbuffer.key[i].state = InputState::NONE;
-			iokmbuffer.key[i].key = 0;
-			iokmbuffer.key[i].scancode = 0;
-			iokmbuffer.key[i].action = 0;
-			iokmbuffer.key[i].mods = 0;
-
 			iokmbuffer.keyReset[i].state = InputState::NONE;
 			iokmbuffer.keyReset[i].key = 0;
 			iokmbuffer.keyReset[i].scancode = 0;
@@ -88,11 +102,14 @@ namespace ewin
 			iokmbuffer.keyReset[i].mods = 0;
 		}
 
+		ResetKeys(iokmbuffer);
+
 		iokmbuffer.mousePos = { 0.0, 0.0 };
 		iokmbuffer.lastMousePos = { 0.0, 0.0 };
 		iokmbuffer.mouseDelta = { 0.0, 0.0 };
 		iokmbuffer.scroll = { 0.0, 0.0 };
 		iokmbuffer.wasMouseMoved = false;
+		iokmbuffer.wasKeyboardUsed = false;
 
 		iowbuffer.drops.paths.clear();
 

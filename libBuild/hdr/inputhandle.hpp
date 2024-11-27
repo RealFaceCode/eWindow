@@ -38,6 +38,7 @@ namespace ewin
         bool isScrollUp() const;
         bool isScrollDown() const;
 
+        bool wasKeyboardUsed() const;
         const Key& getKey(Keyboard key) const;
         const Key& getKeyReset(Keyboard key) const;
         const Button& getButton(MButton button) const;
