@@ -191,20 +191,6 @@ namespace ewin
         int mods;
     };
 
-    struct Cursor
-    {
-    public:
-        double xpos;
-        double ypos;
-    };
-
-    struct Scroll
-    {
-    public:
-        double xoffset;
-        double yoffset;
-    };
-
     struct EWIN_API Drops
     {
     public:
@@ -213,17 +199,33 @@ namespace ewin
         size_t count;
     };
 
-    struct WInput
+    // Input Output Keyboard Mouse Buffer
+    struct IOKMBuffer
     {
     public:
         std::array<Button, expr::MaxMButton> button;
         std::array<Button, expr::MaxMButton> buttonReset;
         std::array<Key, expr::MaxKeyboard> key;
         std::array<Key, expr::MaxKeyboard> keyReset;
-        Cursor cursor;
-        Scroll scroll;
+        std::pair<double, double> mousePos;
+        std::pair<double, double> lastMousePos;
+        std::pair<double, double> mouseDelta;
+        std::pair<double, double> scroll;
+        bool wasMouseMoved;
+    };
+
+    EWIN_API void ResetButtons(IOKMBuffer& input);
+    EWIN_API void ResetKeys(IOKMBuffer& input);
+    
+    // Input Output Window Buffer
+    struct IOWBuffer
+    {
+    public:
         Drops drops;
         CurserEnter cursorEnter;
+        std::shared_ptr<std::pair<int, int>> windowSize;
+        std::shared_ptr<std::pair<int, int>> windowPos;
+        std::pair<int, int> framebufferSize;
         bool isCursorEntered;
         bool isWindowFocused;
         bool isWindowIconified;
@@ -232,11 +234,6 @@ namespace ewin
         bool wasMoved;
     };
 
-
-    EWIN_API void ResetButtons(WInput& input);
-    EWIN_API void ResetKeys(WInput& input);
-    EWIN_API void ResetScroll(Scroll& scroll);
-    EWIN_API void ResetCursorEnter(WInput& input);
-    EWIN_API void Reset(WInput& input);
-
+    EWIN_API void ResetCursorEnter(IOWBuffer& input);
+    EWIN_API void Reset(IOKMBuffer& iokmbuffer, IOWBuffer& iowbuffer);
 }

@@ -5,213 +5,71 @@
 
 namespace ewin
 {
-    namespace internal::callback
-    {
+	static std::shared_ptr<InputHandleKM> KM_IHandle = nullptr;
+	static std::shared_ptr<InputHandleW> W_IHandle = nullptr;
+	static GLFWwindow* currentContext = nullptr;
 
-        void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
-		{
-			auto* win = static_cast<Window*>(::glfwGetWindowUserPointer(window));
-			if(win->isInputBlocked())
-				return;
+	EWIN_API std::shared_ptr<InputHandleKM> GetInputHandle()
+	{
+		return KM_IHandle;
+	}
 
-			auto& input = win->getInput();
-			input.key[key].key = key;
-			input.key[key].scancode = scancode;
-			input.key[key].action = action;
-			input.key[key].mods = mods;
+	EWIN_API std::shared_ptr<InputHandleW> GetWindowInputHandle()
+	{
+		return W_IHandle;
+	}
 
-			input.keyReset[key].key = key;
-			input.keyReset[key].scancode = scancode;
-			input.keyReset[key].action = action;
-			input.keyReset[key].mods = mods;
+	EWIN_API GLFWwindow* GetCurrentContext()
+	{
+		return currentContext;
+	}
 
-			switch (action)
-			{
-			case GLFW_PRESS:
-				input.key[key].state = InputState::PRESSED;
-				input.keyReset[key].state = InputState::PRESSED;
-				break;
-			case GLFW_RELEASE:
-				input.key[key].state = InputState::RELEASED;
-				input.keyReset[key].state = InputState::RELEASED;
-				break;
-			case GLFW_REPEAT:
-				input.key[key].state = InputState::REPEATED;
-				input.keyReset[key].state = InputState::REPEATED;
-				break;
-			}
-		}
+	static void SetInputHandleKM(std::shared_ptr<InputHandleKM> handle)
+	{
+		KM_IHandle = handle;
+	}
 
-		void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
-		{
-			auto* win = static_cast<Window*>(::glfwGetWindowUserPointer(window));
-			if(win->isInputBlocked())
-				return;
+	static void SetInputHandleW(std::shared_ptr<InputHandleW> handle)
+	{
+		W_IHandle = handle;
+	}
 
-			auto& input = win->getInput();
-			input.button[button].button = button;
-			input.button[button].action = action;
-			input.button[button].mods = mods;
-
-			input.buttonReset[button].button = button;
-			input.buttonReset[button].action = action;
-			input.buttonReset[button].mods = mods;
-
-			switch (action)
-			{
-			case GLFW_PRESS:
-				input.button[button].state = InputState::PRESSED;
-				input.buttonReset[button].state = InputState::PRESSED;
-				break;
-			case GLFW_RELEASE:
-				input.button[button].state = InputState::RELEASED;
-				input.buttonReset[button].state = InputState::RELEASED;
-				break;
-			}
-		}
-
-		void cursor_position_callback(GLFWwindow* window, double xpos, double ypos)
-		{
-			auto* win = static_cast<Window*>(::glfwGetWindowUserPointer(window));
-			if(win->isInputBlocked())
-				return;
-
-			auto& input = win->getInput();
-			input.cursor.xpos = xpos;
-			input.cursor.ypos = ypos;
-		}
-
-		void cursor_enter_callback(GLFWwindow* window, int entered)
-		{
-			auto* win = static_cast<Window*>(::glfwGetWindowUserPointer(window));
-			auto& input = win->getInput();
-			input.isCursorEntered = entered;
-			input.cursorEnter = (entered == GLFW_TRUE) ? CurserEnter::ENTERED : CurserEnter::LEFT;
-		}
-
-		void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
-		{
-			auto* win = static_cast<Window*>(::glfwGetWindowUserPointer(window));
-			if(win->isInputBlocked())
-				return;
-
-			auto& input = win->getInput();
-			input.scroll.xoffset = xoffset;
-			input.scroll.yoffset = yoffset;
-		}
-
-		void window_pos_callback(GLFWwindow* window, int xpos, int ypos)
-		{
-			auto* win = static_cast<Window*>(::glfwGetWindowUserPointer(window));
-			win->getSettings().xpos = xpos;
-			win->getSettings().ypos = ypos;
-			
-			auto& input = win->getInput();
-			input.wasMoved = true;
-		}
-
-		void window_size_callback(GLFWwindow* window, int width, int height)
-		{
-			auto* win = static_cast<Window*>(::glfwGetWindowUserPointer(window));
-			auto& settings = win->getSettings();
-			settings.width = width;
-			settings.height = height;
-
-			auto& input = win->getInput();
-			input.wasResized = true;
-		}
-
-		void window_close_callback(GLFWwindow* window)
-		{
-			auto* win = static_cast<Window*>(::glfwGetWindowUserPointer(window));
-			win->getSettings().width = 0;
-			win->getSettings().height = 0;
-		}
-
-		void window_refresh_callback(GLFWwindow* window)
-		{
-			auto* win = static_cast<Window*>(::glfwGetWindowUserPointer(window));
-		}
-
-		void window_focus_callback(GLFWwindow* window, int focused)
-		{
-			auto* win = static_cast<Window*>(::glfwGetWindowUserPointer(window));
-			win->getInput().isWindowFocused = focused;
-		}
-
-		void window_iconify_callback(GLFWwindow* window, int iconified)
-		{
-			Window* win = static_cast<Window*>(glfwGetWindowUserPointer(window));
-			auto& input = win->getInput();
-			input.isWindowIconified = iconified;
-			input.isWindowMaximized = false;
-		}
-
-		void window_maximize_callback(GLFWwindow* window, int maximized)
-		{
-			auto* win = static_cast<Window*>(::glfwGetWindowUserPointer(window));
-			auto& input = win->getInput();
-			input.isWindowMaximized = maximized;
-			input.isWindowIconified = false;
-			input.wasResized = true;
-		}
-
-		static void framebuffer_size_callback(GLFWwindow* window, int width, int height)
-		{
-			auto* win = static_cast<Window*>(::glfwGetWindowUserPointer(window));
-			win->getSettings().fbWidth = width;
-			win->getSettings().fbHeight = height;
-		}
-
-		void drop_callback(GLFWwindow* window, int count, const char** paths)
-		{
-			auto* win = static_cast<Window*>(::glfwGetWindowUserPointer(window));
-			auto& input = win->getInput();
-			input.drops.paths.clear();
-			input.drops.paths.reserve(count);
-			for (int i = 0; i < count; i++)
-				input.drops.paths.emplace_back(paths[i]);
-			input.drops.count = count;
-		}
-    }
+	static void SetCurrentContext(GLFWwindow* window)
+	{
+		currentContext = window;
+	}
 
     Window::Window()
-	: window(nullptr), monitor(nullptr), share(nullptr), cursorMap({}), input({}), blockInputFlag(false)
+	: window(nullptr), monitor(nullptr), share(nullptr), cursorMap({})
     {
         settings = 
 		{
-			.width = 0,
-			.height = 0,
-			.fbWidth = 0,
-			.fbHeight = 0,
+			.size = std::make_shared<std::pair<int, int>>(0, 0),
+			.pos = std::make_shared<std::pair<int, int>>(0, 0),
 			.title = "",
 			.opacity = 1.0f
 		};
     }
 
     Window::Window(int width, int height, const char* title)
-	: window(nullptr), monitor(nullptr), share(nullptr), cursorMap({}), input({}), blockInputFlag(false)
+	: window(nullptr), monitor(nullptr), share(nullptr), cursorMap({})
 	{
 		settings =
 		{
-			.width = width,
-			.height = height,
-			.fbWidth = width,
-			.fbHeight = height,
+			.size = std::make_shared<std::pair<int, int>>(width, height),
+			.pos = std::make_shared<std::pair<int, int>>(0, 0),
 			.title = title,
 			.opacity = 1.0f
 		};
     }
 
     Window::Window(int width, int height, const char* title, GLFWmonitor* monitor, GLFWwindow* share)
-	: window(nullptr), monitor(monitor), share(share), cursorMap({}), input({}), blockInputFlag(false)
-    {
+	: window(nullptr), monitor(monitor), share(share), cursorMap({})
+	{
 		settings =
 		{
-			.width = width,
-			.height = height,
-			.fbWidth = width,
-			.fbHeight = height,
+			.size = std::make_shared<std::pair<int, int>>(width, height),
+			.pos = std::make_shared<std::pair<int, int>>(0, 0),
 			.title = title,
 			.opacity = 1.0f
 		};
@@ -240,10 +98,10 @@ namespace ewin
 			lc::Log<"EWIN">("ERROR", "GLFW Error[{}]: {}", error, description);
 		});
 		
-        window = ::glfwCreateWindow(settings.width, settings.height, settings.title.c_str(), monitor, share);
+        window = ::glfwCreateWindow(settings.size->first, settings.size->second, settings.title.c_str(), monitor, share);
 		if (!window)
 		{
-			lc::Log<"EWIN">("ERROR", "Failed to create window with title: {}, size: {}x{}", settings.title, settings.width, settings.height);
+			lc::Log<"EWIN">("ERROR", "Failed to create window with title: {}, size: {}x{}", settings.title, settings.size->first, settings.size->second);
 			return false;
 		}
 
@@ -255,24 +113,25 @@ namespace ewin
     {
         ::glfwMakeContextCurrent(window);
         ::glfwSetWindowUserPointer(window, this);
+		SetCurrentContext(window);
+
+		kmHandle = std::make_shared<InputHandleKM>();
+		wHandle = std::make_shared<InputHandleW>();
+		Reset(kmHandle->get(), wHandle->get());
+
+		wHandle->setSizePtr(settings.size);
+		wHandle->setPosPtr(settings.pos);
+
 		setCallBacks();
+
+		SetInputHandleKM(kmHandle);
+		SetInputHandleW(wHandle);
     }
 
     void Window::setCallBacks()
     {
-        ::glfwSetKeyCallback(window, internal::callback::key_callback);
-        ::glfwSetMouseButtonCallback(window, internal::callback::mouse_button_callback);
-        ::glfwSetCursorPosCallback(window, internal::callback::cursor_position_callback);
-        ::glfwSetCursorEnterCallback(window, internal::callback::cursor_enter_callback);
-        ::glfwSetScrollCallback(window, internal::callback::scroll_callback);
-		::glfwSetWindowPosCallback(window, internal::callback::window_pos_callback);
-        ::glfwSetWindowSizeCallback(window, internal::callback::window_size_callback);
-        ::glfwSetWindowCloseCallback(window, internal::callback::window_close_callback);
-        ::glfwSetWindowRefreshCallback(window, internal::callback::window_refresh_callback);
-        ::glfwSetWindowFocusCallback(window, internal::callback::window_focus_callback);
-        ::glfwSetWindowIconifyCallback(window, internal::callback::window_iconify_callback);
-        ::glfwSetFramebufferSizeCallback(window, internal::callback::framebuffer_size_callback);
-        ::glfwSetDropCallback(window, internal::callback::drop_callback);
+		kmHandle->setCallbacks(window);
+		wHandle->setCallbacks(window);
     }
 
 	void Window::setPos(int x, int y)
@@ -283,14 +142,14 @@ namespace ewin
 	void Window::setSize(int width, int height)
 	{
 		::glfwSetWindowSize(window, width, height);
-		settings.width = width;
-		settings.height = height;
+		settings.size->first = width;
+		settings.size->second = height;
 	}
 
 	void Window::setAspectRatio(int numer, int denom)
 	{
 		::glfwSetWindowAspectRatio(window, numer, denom);
-		::glfwGetWindowSize(window, &settings.width, &settings.height);
+		::glfwGetWindowSize(window, &settings.size->first, &settings.size->second);
 	}
 
 	void Window::setTitle(const char* title, bool changeSettings)
@@ -298,7 +157,6 @@ namespace ewin
 		::glfwSetWindowTitle(window, title);
 		if (changeSettings)
 			settings.title = title;
-		
 	}
 
 	void Window::setOpacity(float opacity)
@@ -365,10 +223,8 @@ namespace ewin
 			lastTime = currentTime;
 			elapsedTime += deltaTime;
 
-			ResetCursorEnter(input);
-			ResetScroll(input.scroll);
-			ResetButtons(input);
-			ResetKeys(input);
+			kmHandle->update();
+			wHandle->update();
 			::glfwSwapBuffers(window);
 			::glfwPollEvents();
 		}
@@ -397,156 +253,6 @@ namespace ewin
     {
         return settings;
     }
-
-    WInput& Window::getInput()
-    {
-        return input;
-    }
-
-	bool Window::isCursorEntered() const
-	{
-		return input.isCursorEntered;
-	}
-
-	bool Window::isWindowFocused() const
-	{
-		return input.isWindowFocused;
-	}
-
-	bool Window::isWindowIconified() const
-	{
-		return input.isWindowIconified;
-	}
-
-	bool Window::isWindowMaximized() const
-	{
-		return input.isWindowMaximized;
-	}
-
-	bool Window::isKeyPressed(Keyboard key) const
-	{
-		return input.key[static_cast<int>(key)].state == InputState::PRESSED
-		|| input.key[static_cast<int>(key)].state == InputState::REPEATED;
-	}
-
-	bool Window::isKeyReleased(Keyboard key) const
-	{
-		return  input.key[static_cast<int>(key)].state == InputState::RELEASED 
-		|| input.key[static_cast<int>(key)].state == InputState::NONE;
-	}
-
-	bool Window::isKeyRepeated(Keyboard key) const
-	{
-		return input.key[static_cast<int>(key)].state == InputState::REPEATED;
-	}
-
-	bool Window::wasKeyPressed(Keyboard key) const
-	{
-		return input.keyReset[static_cast<int>(key)].state == InputState::PRESSED;
-	}
-
-	bool Window::wasKeyReleased(Keyboard key) const
-	{
-		return input.keyReset[static_cast<int>(key)].state == InputState::RELEASED;
-	}
-
-	bool Window::isButtonPressed(MButton button) const
-	{
-		return input.button[static_cast<int>(button)].state == InputState::PRESSED;
-	}
-
-	bool Window::isButtonReleased(MButton button) const
-	{
-		return input.button[static_cast<int>(button)].state == InputState::RELEASED
-		|| input.button[static_cast<int>(button)].state == InputState::NONE;
-	}
-
-	bool Window::isButtonRepeated(MButton button) const
-	{
-		return input.button[static_cast<int>(button)].state == InputState::REPEATED;
-	}
-
-	bool Window::wasButtonPressed(MButton button) const
-	{
-		return input.buttonReset[static_cast<int>(button)].state == InputState::PRESSED;
-	}
-
-	bool Window::wasButtonReleased(MButton button) const
-	{
-		return input.buttonReset[static_cast<int>(button)].state == InputState::RELEASED;
-	}
-
-	bool Window::wasResized() const
-	{
-		return input.wasResized;
-	}
-
-	bool Window::wasMoved() const
-	{
-		return input.wasMoved;
-	}
-
-	bool Window::hasCursorEntered() const
-	{
-		return input.cursorEnter == CurserEnter::ENTERED;
-	}
-
-	bool Window::hasCursorLeft() const
-	{
-		return input.cursorEnter == CurserEnter::LEFT;
-	}
-
-	double Window::getCursorX() const
-	{
-		return input.cursor.xpos;
-	}
-
-	double Window::getCursorY() const
-	{
-		return input.cursor.ypos;
-	}
-
-	bool Window::isScrollUp() const
-	{
-		return input.scroll.yoffset > 0;
-	}
-
-	bool Window::isScrollDown() const
-	{
-		return input.scroll.yoffset < 0;
-	}
-
-	bool Window::hasDrops() const
-	{
-		return !input.drops.paths.empty();
-	}
-
-	Drops Window::getDrops()
-	{
-		auto drops = input.drops;
-		input.drops.paths.clear();
-		return drops;
-	}
-
-	const Key& Window::getKey(Keyboard key) const
-	{
-		return input.key[static_cast<int>(key)];
-	}
-
-	const Key& Window::getKeyReset(Keyboard key) const
-	{
-		return input.keyReset[static_cast<int>(key)];
-	}
-
-	const Button& Window::getButton(MButton button) const
-	{
-		return input.button[static_cast<int>(button)];
-	}
-
-	const Button& Window::getButtonReset(MButton button) const
-	{
-		return input.buttonReset[static_cast<int>(button)];
-	}
 
 	void Window::iconify() const
 	{
@@ -583,61 +289,21 @@ namespace ewin
 		::glfwFocusWindow(window);
 	}
 
-	void Window::blockInput(bool block)
-	{
-		blockInputFlag = block;
-	}
-
-	void Window::setKey(Keyboard key, InputState state, int scancode, int action, int mods)
-	{
-		auto k = static_cast<int>(key);
-		input.key[k].key = k;
-		input.key[k].scancode = scancode;
-		input.key[k].action = action;
-		input.key[k].mods = mods;
-		input.key[k].state = state;
-	}
-
-	void Window::setButton(MButton button, InputState state, int action, int mods)
-	{
-		auto b = static_cast<int>(button);
-		input.button[b].button = b;
-		input.button[b].action = action;
-		input.button[b].mods = mods;
-		input.button[b].state = state;
-	}
-
-	void Window::setCursor(double xpos, double ypos)
-	{
-		input.cursor.xpos = xpos;
-		input.cursor.ypos = ypos;
-		glfwSetCursorPos(window, xpos, ypos);
-	}
-
-	void Window::setScroll(double xoffset, double yoffset)
-	{
-		input.scroll.xoffset = xoffset;
-		input.scroll.yoffset = yoffset;
-	}
-
-	bool Window::isInputBlocked() const
-	{
-		return blockInputFlag;
-	}
 
 	std::pair<int, int> Window::getFrameBufferSize() const
 	{	
-		return {settings.fbWidth, settings.fbHeight};
+		auto& buf = wHandle->get();
+		return buf.framebufferSize;
 	}
 
 	std::pair<int, int> Window::getWindowSize() const
 	{
-		return {settings.width, settings.height};
+		return {settings.size->first, settings.size->second};
 	}
 
 	std::pair<int, int> Window::getPos() const
 	{
-		return {settings.xpos, settings.ypos};
+		return {settings.pos->first, settings.pos->second};
 	}
 
 	void Window::updateFPS()
