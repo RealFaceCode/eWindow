@@ -65,6 +65,7 @@ namespace ewin
         double getFPS() const;
         double getDeltaTime() const;
         double getElapsedTime() const;
+        double getAspect() const;
 
     private:
         GLFWwindow* window;

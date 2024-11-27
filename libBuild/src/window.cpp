@@ -336,4 +336,9 @@ namespace ewin
 	{
 		return elapsedTime;
 	}
+
+	double Window::getAspect() const
+	{
+		return settings.size->first / settings.size->second;
+	}
 }
