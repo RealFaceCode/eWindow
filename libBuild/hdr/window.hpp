@@ -16,9 +16,12 @@ struct GLFWcursor;
 
 namespace ewin
 {
+    struct Window;
+
     EWIN_API std::shared_ptr<InputHandleKM> GetInputHandle();
     EWIN_API std::shared_ptr<InputHandleW> GetWindowInputHandle();
     EWIN_API GLFWwindow* GetCurrentContext();
+    EWIN_API std::shared_ptr<Window> GetCurrentWindow();
 
     struct EWIN_API Window
     {
