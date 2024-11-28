@@ -124,6 +124,9 @@ namespace ewin
 
 		setCallBacks();
 
+		auto& fb = wHandle->get().framebufferSize;
+		glfwGetFramebufferSize(window, &fb.first, &fb.second);
+
 		SetInputHandleKM(kmHandle);
 		SetInputHandleW(wHandle);
     }
