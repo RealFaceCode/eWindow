@@ -28,6 +28,11 @@ if(NOT EXISTS "${EUTIL_LIB_DIR}/CMakeLists.txt")
         GIT_TAG main
         SOURCE_DIR ${EUTIL_LIB_DIR}
     )
+
+    if(NOT eUtil_POPULATED)
+        FetchContent_Populate(eUtil)
+    endif()
+
     message(STATUS "Library 'eUtil' fetched.")
 else()
     message(STATUS "Library 'eUtil' already exists.")
@@ -48,6 +53,11 @@ if(NOT EXISTS "${LOGCRAFT_LIB_DIR}/CMakeLists.txt")
         GIT_TAG main
         SOURCE_DIR ${LOGCRAFT_LIB_DIR}
     )
+
+    if(NOT LogCraft_POPULATED)
+        FetchContent_Populate(LogCraft)
+    endif()
+
     message(STATUS "Library 'LogCraft' fetched.")
 else()
     message(STATUS "Library 'LogCraft' already exists.")
@@ -68,8 +78,12 @@ if(NOT EXISTS "${GLFW_LIB_DIR}/CMakeLists.txt")
         GIT_TAG master
         SOURCE_DIR ${GLFW_LIB_DIR}
     )
+    
+    if(NOT glfw_POPULATED)
+        FetchContent_Populate(glfw)
+    endif()
     message(STATUS "Library 'glfw' fetched.")
-else()
+    else()
     message(STATUS "Library 'glfw' already exists.")
     message(STATUS "Try to fetch updates...")
 
