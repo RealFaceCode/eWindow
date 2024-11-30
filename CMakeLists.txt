@@ -94,15 +94,15 @@ if(NOT EXISTS "${GLFW_LIB_DIR}/CMakeLists.txt")
 endif()
 
 if(NOT TARGET glfw)
-    add_subdirectory(${GLFW_LIB_DIR})
+    add_subdirectory(${GLFW_LIB_DIR} ${CMAKE_CURRENT_BINARY_DIR}/glfw)
 endif()
 
 if(NOT TARGET eUtil)
-    add_subdirectory(${EUTIL_LIB_DIR})
+    add_subdirectory(${EUTIL_LIB_DIR} ${CMAKE_CURRENT_BINARY_DIR}/eUtil)
 endif()
 
 if(NOT TARGET LogCraft)
-    add_subdirectory(${LOGCRAFT_LIB_DIR})
+    add_subdirectory(${LOGCRAFT_LIB_DIR} ${CMAKE_CURRENT_BINARY_DIR}/LogCraft)
 endif()
 
 file(GLOB_RECURSE SOURCE_FILES CONFIGURE_DEPENDS  "libBuild/src/*.cpp")
