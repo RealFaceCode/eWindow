@@ -8,7 +8,7 @@ namespace ewin
 	static std::shared_ptr<InputHandleKM> KM_IHandle = nullptr;
 	static std::shared_ptr<InputHandleW> W_IHandle = nullptr;
 	static GLFWwindow* currentContext = nullptr;
-	static std::shared_ptr<Window> currentWindow = nullptr;
+	static Window* currentWindow = nullptr;
 
 	EWIN_API std::shared_ptr<InputHandleKM> GetInputHandle()
 	{
@@ -25,7 +25,7 @@ namespace ewin
 		return currentContext;
 	}
 
-	EWIN_API std::shared_ptr<Window> GetCurrentWindow()
+	EWIN_API Window* GetCurrentWindow()
 	{
 		return currentWindow;
 	}
@@ -45,9 +45,9 @@ namespace ewin
 		currentContext = window;
 	}
 
-	static void SetCurrentWindow(std::shared_ptr<Window> window)
+	static void SetCurrentWindow(Window& window)
 	{
-		currentWindow = window;
+		currentWindow = &window;
 	}
 
     Window::Window()
@@ -125,7 +125,7 @@ namespace ewin
         ::glfwMakeContextCurrent(window);
         ::glfwSetWindowUserPointer(window, this);
 		SetCurrentContext(window);
-		SetCurrentWindow(std::make_shared<Window>(*this));
+		SetCurrentWindow(*this);
 
 		kmHandle = std::make_shared<InputHandleKM>();
 		wHandle = std::make_shared<InputHandleW>();

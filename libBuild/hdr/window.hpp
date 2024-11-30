@@ -21,7 +21,7 @@ namespace ewin
     EWIN_API std::shared_ptr<InputHandleKM> GetInputHandle();
     EWIN_API std::shared_ptr<InputHandleW> GetWindowInputHandle();
     EWIN_API GLFWwindow* GetCurrentContext();
-    EWIN_API std::shared_ptr<Window> GetCurrentWindow();
+    EWIN_API Window* GetCurrentWindow();
 
     struct EWIN_API Window
     {
