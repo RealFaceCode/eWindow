@@ -13,8 +13,59 @@ if($ENV{EWINDOWLIB_BUILD_EXAMPLES})
     set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/bin)
 endif()
 
-add_subdirectory(thirdparty/LogCraft)
-add_subdirectory(thirdparty/eUtil)
+include(FetchContent)
+
+# Pfad zur Bibliothek
+set(EUTIL_LIB_DIR "${CMAKE_SOURCE_DIR}/thirdparty/eUtil")
+set(LOGCRAFT_LIB_DIR "${CMAKE_SOURCE_DIR}/thirdparty/LogCraft")
+
+# Überprüfen, ob das Verzeichnis existiert
+if(NOT EXISTS "${EUTIL_LIB_DIR}/CMakeLists.txt")
+    message(STATUS "Library 'eUtil' not found. Fetching...")
+
+    FetchContent_Declare(
+        eUtil
+        GIT_REPOSITORY https://github.com/RealFaceCode/eUtil.git
+        GIT_TAG main
+        SOURCE_DIR ${EUTIL_LIB_DIR}
+    )
+
+    FetchContent_MakeAvailable(eUtil)
+    message(STATUS "Library 'eUtil' fetched.")
+else()
+    message(STATUS "Library 'eUtil' already exists.")
+    message(STATUS "Try to fetch updates...")
+
+    execute_process(
+        COMMAND git pull
+        WORKING_DIRECTORY ${EUTIL_LIB_DIR}
+    )
+endif()
+
+if(NOT EXISTS "${LOGCRAFT_LIB_DIR}/CMakeLists.txt")
+    message(STATUS "Library 'LogCraft' not found. Fetching...")
+
+    FetchContent_Declare(
+        eUtil
+        GIT_REPOSITORY https://github.com/RealFaceCode/LogCraft.git
+        GIT_TAG main
+        SOURCE_DIR ${LOGCRAFT_LIB_DIR}
+    )
+
+    FetchContent_MakeAvailable(eUtil)
+    message(STATUS "Library 'LogCraft' fetched.")
+else()
+    message(STATUS "Library 'LogCraft' already exists.")
+    message(STATUS "Try to fetch updates...")
+
+    execute_process(
+        COMMAND git pull
+        WORKING_DIRECTORY ${LOGCRAFT_LIB_DIR}
+    )
+endif()
+
+add_subdirectory(${EUTIL_LIB_DIR})
+add_subdirectory(${LOGCRAFT_LIB_DIR})
 add_subdirectory(thirdparty/glfw)
 
 file(GLOB_RECURSE SOURCE_FILES CONFIGURE_DEPENDS  "libBuild/src/*.cpp")
