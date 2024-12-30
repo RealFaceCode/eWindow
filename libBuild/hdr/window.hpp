@@ -47,6 +47,8 @@ namespace ewin
         void addCursor(std::string_view name, const std::filesystem::path& path, int xhot, int yhot);
         void setCursor(const std::string& name);
 
+        void setWinPosWithMouse(MButton butten, int boundyX, int boundyY, int boundyWidth, int boundyHeight);
+
         void update();
         void close();
         bool active() const;

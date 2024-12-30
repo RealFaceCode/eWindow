@@ -116,6 +116,14 @@ namespace ewin
 			return false;
 		}
 
+		auto vidMode = ::glfwGetVideoMode(::glfwGetPrimaryMonitor());
+		if(vidMode != nullptr)
+		{
+			int xPos = (vidMode->width - settings.size->first) / 2;
+			int yPos = (vidMode->height - settings.size->second) / 2;
+			setPos(xPos, yPos);
+		}
+
 		setContext();
 		return true;
     }
@@ -157,6 +165,8 @@ namespace ewin
 	void Window::setPos(int x, int y)
 	{
 		::glfwSetWindowPos(window, x, y);
+		settings.pos->first = x;
+		settings.pos->second = y;
 	}
 
 	void Window::setSize(int width, int height)
@@ -233,6 +243,56 @@ namespace ewin
 		auto cursor = it->second;
 		::glfwSetCursor(window, cursor);
 	}
+
+
+
+	void Window::setWinPosWithMouse(MButton butten, int boundryX, int boundryY, int boundryWidth, int boundryHeight)
+	{
+		static int oldMX;
+		static int oldMY;
+		static bool first = true;
+		static bool locked = false;
+		static bool pressedBeforeBoundry = false;
+
+		if(kmHandle->isButtonReleased(butten) && !first)
+		{
+			first = true;
+			locked = false;
+		}
+
+		if(kmHandle->isButtonReleased(butten) && pressedBeforeBoundry)
+			pressedBeforeBoundry = false;
+
+		if(kmHandle->isButtonPressed(butten) && !pressedBeforeBoundry)
+		{
+			auto [mx, my] = static_cast<std::pair<int, int>>(kmHandle->getMousePos());
+
+			if(!locked)
+			{
+				if(mx < boundryX || mx > boundryX + boundryWidth || my < boundryY || my > boundryY + boundryHeight)
+				{
+					pressedBeforeBoundry = true;
+					return;
+				}
+				else
+					locked = true;
+			}
+			
+			if(first)
+			{
+				oldMX = mx;
+				oldMY = my;
+				first = false;
+			}
+
+			auto [wx, wy] = getPos();		
+			int newX = (mx - oldMX) + wx;
+			int newY = (my - oldMY) + wy;
+
+			setPos(newX, newY);
+		}
+	}
+
 
     void Window::update()
     {
