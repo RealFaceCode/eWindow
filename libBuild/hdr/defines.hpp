@@ -17,3 +17,12 @@
 #else
     #define EWIN_API DLL_IMPORT
 #endif
+
+namespace ewin
+{
+    enum class OpenGLProfile
+    {
+        OpenGLProfileCore = 0,          // OpenGL core profile (no deprecated functions)
+        OpenGLProfileCompatibility = 1  // OpenGL compatibility profile (all functions available)
+    };
+}

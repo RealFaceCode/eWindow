@@ -36,6 +36,8 @@ namespace ewin
         void setContext();
         void setCallBacks();
 
+        void makeBorderless(bool borderless);
+
         void setPos(int x, int y);
         void setSize(int width, int height);
         void setAspectRatio(int numer, int denom);

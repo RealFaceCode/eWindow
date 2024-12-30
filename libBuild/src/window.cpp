@@ -108,7 +108,7 @@ namespace ewin
 		{
 			lc::Log<"EWIN">("ERROR", "GLFW Error[{}]: {}", error, description);
 		});
-		
+
         window = ::glfwCreateWindow(settings.size->first, settings.size->second, settings.title.c_str(), monitor, share);
 		if (!window)
 		{
@@ -148,6 +148,11 @@ namespace ewin
 		kmHandle->setCallbacks(window);
 		wHandle->setCallbacks(window);
     }
+	
+	void Window::makeBorderless(bool borderless)
+	{
+		::glfwSetWindowAttrib(window, GLFW_DECORATED, borderless ? GLFW_FALSE : GLFW_TRUE);
+	}
 
 	void Window::setPos(int x, int y)
 	{
@@ -256,7 +261,7 @@ namespace ewin
 	{
 		if(window == nullptr)
 			return false;
-		return !glfwWindowShouldClose(window);
+		return !::glfwWindowShouldClose(window);
 	}
 
     GLFWwindow* Window::getGLFWwindow()
