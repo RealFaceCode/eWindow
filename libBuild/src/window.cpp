@@ -293,7 +293,6 @@ namespace ewin
 		}
 	}
 
-
     void Window::update()
     {
 		if(window != nullptr)
