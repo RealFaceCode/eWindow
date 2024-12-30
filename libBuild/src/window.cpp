@@ -244,8 +244,6 @@ namespace ewin
 		::glfwSetCursor(window, cursor);
 	}
 
-
-
 	void Window::setWinPosWithMouse(MButton butten, int boundryX, int boundryY, int boundryWidth, int boundryHeight)
 	{
 		static int oldMX;
