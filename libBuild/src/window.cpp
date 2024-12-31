@@ -283,7 +283,7 @@ namespace ewin
 				first = false;
 			}
 
-			auto [wx, wy] = getPos();		
+			auto [wx, wy] = pos();		
 			int newX = (mx - oldMX) + wx;
 			int newY = (my - oldMY) + wy;
 
@@ -367,18 +367,18 @@ namespace ewin
 	}
 
 
-	std::pair<int, int> Window::getFrameBufferSize() const
+	std::pair<int, int> Window::frameBufferSize() const
 	{	
 		auto& buf = wHandle->get();
 		return buf.framebufferSize;
 	}
 
-	std::pair<int, int> Window::getWindowSize() const
+	std::pair<int, int> Window::size() const
 	{
 		return {settings.size->first, settings.size->second};
 	}
 
-	std::pair<int, int> Window::getPos() const
+	std::pair<int, int> Window::pos() const
 	{
 		return {settings.pos->first, settings.pos->second};
 	}

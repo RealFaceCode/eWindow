@@ -64,15 +64,16 @@ namespace ewin
         void noteify() const;
         void focus() const;
 
-        std::pair<int, int> getFrameBufferSize() const;
-        std::pair<int, int> getWindowSize() const;
-        std::pair<int, int> getPos() const;
+        std::pair<int, int> frameBufferSize() const;
+        std::pair<int, int> size() const;
+        std::pair<int, int> pos() const;
 
         void updateFPS();
         double getFPS() const;
         double getDeltaTime() const;
         double getElapsedTime() const;
         double getAspect() const;
+        
 
     private:
         GLFWwindow* window;
