@@ -77,7 +77,22 @@ namespace ewin
 
     EWIN_API void SetOpenGLProfile(OpenGLProfile profile)
     {
-        ::glfwWindowHint(GLFW_OPENGL_PROFILE, static_cast<int>(profile));
+
+        switch (profile)
+        {
+        case OpenGLProfile::OpenGLProfileCore:
+            ::glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+            break;
+        case OpenGLProfile::OpenGLProfileCompat:
+            ::glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_COMPAT_PROFILE);
+            break;
+        case OpenGLProfile::OpenGLProfileAny:
+            ::glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_ANY_PROFILE);
+            break;
+        default:
+            ::glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+            break;
+        }
 
         ContextSetting.profile = profile;
     }

@@ -23,6 +23,7 @@ namespace ewin
     enum class OpenGLProfile
     {
         OpenGLProfileCore = 0,          // OpenGL core profile (no deprecated functions)
-        OpenGLProfileCompatibility = 1  // OpenGL compatibility profile (all functions available)
+        OpenGLProfileCompat = 1,        // OpenGL compatibility profile (all functions available)
+        OpenGLProfileAny = 2            // Any OpenGL profile
     };
 }
