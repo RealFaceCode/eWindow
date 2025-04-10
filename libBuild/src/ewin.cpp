@@ -1,5 +1,5 @@
 #include "ewin.hpp"
-#include "lc.hpp"
+#include <logcraft/lc.hpp>
 #include "contextsettings.hpp"
 #include <GLFW/glfw3.h>
 

@@ -1,6 +1,6 @@
 #include "window.hpp"
 #include <GLFW/glfw3.h>
-#include <log.hpp>
+#include <logcraft/log.hpp>
 #include "imageload.hpp"
 
 namespace ewin

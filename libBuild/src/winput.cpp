@@ -1,33 +1,25 @@
 #include "winput.hpp"
 #include <fstream>
-#include <fioc.hpp>
-#include <ahc.hpp>
+#include <eutil/buffer/Array.hpp>
+#include <eutil/filesystem/FileIOGeneric.hpp>
+#include <eutil/filesystem/FileLoad.hpp>
 
 namespace ewin
 {
-	eutil::ahc::Array Drops::getContexts() const
+	util::Array Drops::getContexts() const
 	{
-		eutil::ahc::Array contexts;
-
+		util::Array context;
 		for(auto& path : paths)
 		{
-			FILE* file = nullptr;
-			std::string pathStr = path.string();
-			const char* cpath = pathStr.c_str();
-			size_t size = 0;
-			eutil::fioc::GetFileSize(cpath, size);
-			auto* buffer = new char[size + 1];
-
-			eutil::fioc::ReadDataFromFileRaw(&file, cpath, (void**)&buffer, size, size + 1);
-			buffer[size] = '\0';
-			eutil::fioc::close_file(&file, true);
-
-			eutil::ahc::WriteToArray(contexts, size);
-			eutil::ahc::WriteToArray(contexts, buffer, size);
-			delete[] buffer;
-
+			auto file = util::LoadFile(path);
+			if(file.has_value())
+			{
+				auto& fileData = file.value();
+				context.write(fileData.size());
+				context.write(fileData.data(), fileData.size());
+			}
 		}
-		return contexts;
+		return context;
 	}
 
 	EWIN_API void ResetButtons(IOKMBuffer& input)

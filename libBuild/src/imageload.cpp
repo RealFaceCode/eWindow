@@ -4,7 +4,7 @@
 
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
-#include <log.hpp>
+#include <logcraft/log.hpp>
 
 namespace ewin
 {

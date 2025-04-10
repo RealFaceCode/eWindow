@@ -1,8 +1,9 @@
 #pragma once
+
 #include <filesystem>
 #include <vector>
 #include <array>
-#include <ahc.hpp>
+#include <eutil/buffer/Array.hpp>
 
 #include "defines.hpp"
 
@@ -194,7 +195,7 @@ namespace ewin
     struct EWIN_API Drops
     {
     public:
-        eutil::ahc::Array getContexts() const;
+        util::Array getContexts() const;
         std::vector<std::filesystem::path> paths;
         size_t count;
     };
