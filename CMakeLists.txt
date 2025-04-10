@@ -109,12 +109,10 @@ file(GLOB_RECURSE SOURCE_FILES CONFIGURE_DEPENDS  "libBuild/src/*.cpp")
 if(NOT TARGET ${PROJECT_NAME})
     add_library(${PROJECT_NAME} SHARED ${SOURCE_FILES})
     target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_23)
-    target_include_directories(${PROJECT_NAME}
-    PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/libBuild/hdr
-    )
+    target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/libBuild/include)
     target_include_directories(${PROJECT_NAME} 
-    PUBLIC ${LOGCRAFT_LIB_DIR}/libBuild/hdr
-    PUBLIC ${EUTIL_LIB_DIR}/libBuild/hdr
+    PUBLIC ${LOGCRAFT_LIB_DIR}/libBuild/include
+    PUBLIC ${EUTIL_LIB_DIR}/libBuild/include
     PUBLIC ${GLFW_LIB_DIR}/include
     PUBLIC thirdparty/stbi
     )

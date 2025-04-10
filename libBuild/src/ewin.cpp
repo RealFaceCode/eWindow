@@ -1,6 +1,8 @@
-#include "ewin.hpp"
+#include "easywindow/ewin.hpp"
+
+#include "easywindow/contextsettings.hpp"
+
 #include <logcraft/lc.hpp>
-#include "contextsettings.hpp"
 #include <GLFW/glfw3.h>
 
 #if _WIN32

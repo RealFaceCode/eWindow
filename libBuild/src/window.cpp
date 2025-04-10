@@ -1,7 +1,9 @@
-#include "window.hpp"
+#include "easywindow/window.hpp"
+
+#include "easywindow/imageload.hpp"
+
 #include <GLFW/glfw3.h>
 #include <logcraft/log.hpp>
-#include "imageload.hpp"
 
 namespace ewin
 {

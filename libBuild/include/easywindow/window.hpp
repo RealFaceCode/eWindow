@@ -1,13 +1,14 @@
 #pragma once
 
+#include "easywindow/defines.hpp"
+#include "easywindow/wsettings.hpp"
+#include "easywindow/winput.hpp"
+#include "easywindow/inputhandle.hpp"
+
 #include <filesystem>
 #include <vector>
 #include <unordered_map>
-#include "wsettings.hpp"
-#include "winput.hpp"
-#include "defines.hpp"
 #include <memory>
-#include <inputhandle.hpp>
 
 struct GLFWwindow;
 struct GLFWmonitor;

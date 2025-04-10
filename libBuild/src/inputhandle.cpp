@@ -1,5 +1,7 @@
-#include "inputhandle.hpp"
-#include "window.hpp"
+#include "easywindow/inputhandle.hpp"
+
+#include "easywindow/window.hpp"
+
 #include <GLFW/glfw3.h>
 
 namespace ewin
